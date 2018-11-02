@@ -1,6 +1,10 @@
-# numpy-MNIST
+# Disc Golf course Statistics
 
 This repository is for Laboratory work for the course **Introduction to databases** at **University of Helsinki**.
+
+## Live
+
+App is running live at [Disc Golf course Statistics](https://discgolfstats.herokuapp.com/)
 
 ## Description
 
