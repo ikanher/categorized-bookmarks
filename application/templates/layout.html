@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Disc Golf Statistics</title>
-  </head>
+    <head>
+        <meta charset="utf-8">
+            <title>Disc Golf Statistics</title>
+    </head>
 
-  <body>
-    {% block body %}
-      <p>
-        Content.
-      </p>
-    {% endblock %}
-  </body>
+    <body>
+        <ul>
+            <li><a href="{{ url_for('courses_list') }}">List courses</a></li>
+            <li><a href="{{ url_for('courses_form') }}">Add a course</a></li>
+        </ul>
+        {% block body %}
+        <p>
+            Content.
+        </p>
+        {% endblock %}
+    </body>
 </html>

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Course</th>
+        </tr>
+    {% for course in courses %}
+        <tr>
+            <td>{{ course.name }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
