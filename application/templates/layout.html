@@ -6,6 +6,14 @@
     </head>
 
     <body>
+        {% if current_user.is_authenticated %}
+        <p>
+            User: {{ current_user.name }}. <a href="{{ url_for('auth_logout') }}">Logout</a>
+        </p>
+        {% else %}
+            <a href="{{ url_for('auth_login') }}">Login</a>
+            <a href="{{ url_for('auth_register') }}">Register</a>
+        {% endif %}
         <ul>
             <li><a href="{{ url_for('courses_list') }}">List courses</a></li>
             <li><a href="{{ url_for('courses_form') }}">Add a course</a></li>
