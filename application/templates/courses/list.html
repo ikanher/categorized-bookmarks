@@ -4,10 +4,12 @@
     <table>
         <tr>
             <th>Course</th>
+            <th>Actions</th>
         </tr>
     {% for course in courses %}
         <tr>
             <td>{{ course.name }}</td>
+            <td><a href="{{ url_for('courses_edit', id=course.id) }}">Edit</a></td>
         </tr>
     {% endfor %}
     </table>
