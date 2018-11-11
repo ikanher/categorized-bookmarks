@@ -1,0 +1,3 @@
+[User]*-*[Team],[User]1-*[Score]
+[Score]*-1[Hole]
+[Course]1-*[Hole]
