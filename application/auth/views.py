@@ -16,8 +16,7 @@ def auth_login():
     if not user:
         return render_template('auth/login_form.html', form=form, error='No such username or password')
 
-    password = form.password.data.encode('utf-8')
-    if not bcrypt.check_password_hash(user.password, password):
+    if not bcrypt.check_password_hash(user.password.encode('utf-8'), password.encode('utf-8')):
         return render_template('auth/login_form.html', form=form, error='No such username or password')
 
     login_user(user)
@@ -38,8 +37,7 @@ def auth_register():
     if form.password.data != form.password_confirm.data:
         return render_template('auth/register_form.html', form=form, error='Passwords do not match')
 
-    password = form.password.data.encode('utf-8')
-    pw_hash = bcrypt.generate_password_hash(password)
+    pw_hash = bcrypt.generate_password_hash(form.password.data.encode('utf-8'))
     new_user = User(form.fullname.data, form.username.data, pw_hash)
     db.session().add(new_user)
     db.session().commit()
