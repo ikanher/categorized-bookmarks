@@ -17,3 +17,6 @@ class RegisterForm(FlaskForm):
             [validators.DataRequired(), validators.Length(min=8)])
     password_confirm = PasswordField('Confirm password',
             [validators.DataRequired(), validators.Length(min=8)])
+
+    class Meta:
+        csrf = False
