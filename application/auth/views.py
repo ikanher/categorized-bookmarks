@@ -11,6 +11,8 @@ def auth_login():
         return render_template('auth/login_form.html', form=LoginForm())
 
     form = LoginForm(request.form)
+    if not form.validate():
+        return render_template("auth/login_form.html", form=form)
 
     user = User.query.filter_by(username=form.username.data).first()
     if not user:
@@ -29,6 +31,8 @@ def auth_register():
         return render_template('auth/register_form.html', form=RegisterForm())
 
     form = RegisterForm(request.form)
+    if not form.validate():
+        return render_template("auth/register_form.html", form=form)
 
     user = User.query.filter_by(username=form.username.data).first()
     if user:
