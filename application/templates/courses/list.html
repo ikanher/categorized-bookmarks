@@ -10,6 +10,7 @@
         <tr>
             <td>{{ course.name }}</td>
             <td><a href="{{ url_for('courses_edit', id=course.id) }}">Edit</a></td>
+            <td><a href="{{ url_for('courses_delete', id=course.id) }}">Delete</a></td>
         </tr>
     {% endfor %}
     </table>

@@ -18,6 +18,10 @@ def courses_form():
 @login_required
 def courses_create():
     form = CourseForm(request.form)
+
+    if not form.validate():
+        return render_template("courses/create.html", form = form)
+
     c = Course(form.name.data)
 
     db.session().add(c)
@@ -35,8 +39,21 @@ def courses_edit(id):
         return render_template('courses/edit.html', form=form)
 
     form = CourseForm(request.form)
+    form.id = id
+    if not form.validate():
+        return render_template("courses/edit.html", form = form)
+
     c = Course.query.get(id)
     c.name = form.name.data
     db.session.commit()
 
     return redirect(url_for("courses_list"))
+
+@app.route('/courses/delete/<int:id>', methods=['GET'])
+@login_required
+def courses_delete(id):
+    c = Course.query.get(id)
+    db.session().delete(c)
+    db.session().commit()
+    return redirect(url_for("courses_list"))
+
