@@ -6,6 +6,15 @@
     </head>
 
     <body>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
         {% if current_user.is_authenticated %}
         <p>
             User: {{ current_user.name }}. <a href="{{ url_for('auth_logout') }}">Logout</a>

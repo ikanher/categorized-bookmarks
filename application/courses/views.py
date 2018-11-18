@@ -1,5 +1,5 @@
 from application import app, db
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required
 
 from application.courses.models import Course
@@ -32,6 +32,8 @@ def courses_create():
     db.session().add(c)
     db.session().commit()
 
+    flash("Course %s created" % c.name)
+
     return redirect(url_for("courses_list"))
 
 @app.route('/courses/edit/<int:id>', methods=['GET', 'POST'])
@@ -52,6 +54,8 @@ def courses_edit(id):
     c.name = form.name.data
     db.session.commit()
 
+    flash("Course %s saved" % c.name)
+
     return redirect(url_for("courses_list"))
 
 @app.route('/courses/delete/<int:id>', methods=['GET'])
@@ -60,5 +64,8 @@ def courses_delete(id):
     c = Course.query.get(id)
     db.session().delete(c)
     db.session().commit()
+
+    flash("Deleted course: %s" % c.name)
+
     return redirect(url_for("courses_list"))
 
