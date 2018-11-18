@@ -14,13 +14,18 @@ def courses_list():
 def courses_form():
     return render_template('courses/create.html', form=CourseForm())
 
-@app.route('/courses/', methods=['POST'])
+@app.route('/courses/view/<int:id>', methods=['GET'])
+def courses_view(id):
+    c = Course.query.get(id)
+    return render_template('courses/view.html', course=c)
+
+@app.route('/courses/create', methods=['POST'])
 @login_required
 def courses_create():
     form = CourseForm(request.form)
 
     if not form.validate():
-        return render_template("courses/create.html", form = form)
+        return render_template("courses/create.html", form=form)
 
     c = Course(form.name.data)
 
@@ -41,7 +46,7 @@ def courses_edit(id):
     form = CourseForm(request.form)
     form.id = id
     if not form.validate():
-        return render_template("courses/edit.html", form = form)
+        return render_template("courses/edit.html", form=form)
 
     c = Course.query.get(id)
     c.name = form.name.data
