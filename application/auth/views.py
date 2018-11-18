@@ -38,7 +38,8 @@ def auth_register():
     if form.password.data != form.password_confirm.data:
         return render_template('auth/register_form.html', form=form, error='Passwords do not match')
 
-    pw_hash = bcrypt.generate_password_hash(form.password.data)
+    password = form.password.data.encode('utf-8')
+    pw_hash = bcrypt.generate_password_hash(password)
     new_user = User(form.fullname.data, form.username.data, pw_hash)
     db.session().add(new_user)
     db.session().commit()
