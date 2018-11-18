@@ -16,7 +16,9 @@
         {% endif %}
         <ul>
             <li><a href="{{ url_for('courses_list') }}">List courses</a></li>
+        {% if current_user.is_authenticated %}
             <li><a href="{{ url_for('courses_form') }}">Add a course</a></li>
+        {% endif %}
         </ul>
         {% block body %}
         <p>

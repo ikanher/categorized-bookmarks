@@ -4,15 +4,19 @@
     <table>
         <tr>
             <th>Course</th>
+        {% if current_user.is_authenticated %}
             <th>Actions</th>
+        {% endif %}
         </tr>
     {% for course in courses %}
         <tr>
             <td><a href="{{ url_for('courses_view', id=course.id) }}">{{ course.name }}</a></td>
+        {% if current_user.is_authenticated %}
             <td>
                 <a href="{{ url_for('courses_edit', id=course.id) }}">Edit</a>
                 <a href="{{ url_for('courses_delete', id=course.id) }}">Delete</a>
             </td>
+        {% endif %}
         </tr>
     {% endfor %}
     </table>
