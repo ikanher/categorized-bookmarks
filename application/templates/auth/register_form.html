@@ -1,73 +1,13 @@
 {% extends "layout.html" %}
 
 {% block body %}
-{{ error }}
 <form method="POST" action="{{ url_for('auth_register') }}">
-    {{ form.csrf_token }}
-    <table>
-        <tr>
-            <td>
-                {{ form.fullname.label }}
-            </td>
-            <td>
-                {{ form.fullname }}
-            </td>
-           <td>
-                <ul>
-                    {% for error in form.fullname.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                {{ form.username.label }}
-            </td>
-            <td>
-                {{ form.username }}
-            </td>
-           <td>
-                <ul>
-                    {% for error in form.username.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                {{ form.password.label }}
-            </td>
-            <td>
-                {{ form.password }}
-            </td>
-           <td>
-                <ul>
-                    {% for error in form.password.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                {{ form.password_confirm.label }}
-            </td>
-            <td>
-                {{ form.password_confirm }}
-            </td>
-           <td>
-                <ul>
-                    {% for error in form.password_confirm.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" value="Register" /></td>
-        </tr>
-    </table>
+    {{ form.hidden_tag() }}
+    {{ wtf.form_errors(form, hiddens="only") }}
+    {{ wtf.form_field(form.fullname, autofocus=true) }}
+    {{ wtf.form_field(form.username) }}
+    {{ wtf.form_field(form.password) }}
+    {{ wtf.form_field(form.password_confirm) }}
+    {{ wtf.form_field(form.register) }}
 </form>
 {% endblock %}

@@ -2,43 +2,10 @@
 
 {% block body %}
 <form method="POST" action="{{ url_for('courses_create') }}">
-    {{ form.csrf_token }}
-    <table>
-        <tr>
-            <td>
-                {{ form.name.label }}
-            </td>
-            <td>
-                {{ form.name }}
-            </td>
-            <td>
-                <ul>
-                    {% for error in form.name.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                {{ form.location.label }}
-            </td>
-            <td>
-                {{ form.location }}
-            </td>
-            <td>
-                <ul>
-                    {% for error in form.location.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Add a new course"/>
-            </td>
-        </tr>
-    </table>
+    {{ form.hidden_tag() }}
+    {{ wtf.form_errors(form, hiddens="only") }}
+    {{ wtf.form_field(form.name) }}
+    {{ wtf.form_field(form.location) }}
+    {{ wtf.form_field(form.save) }}
 </form>
 {% endblock %}

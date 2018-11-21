@@ -2,10 +2,12 @@ import os
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_wtf.csrf import CSRFProtect
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 csrf = CSRFProtect(app)
+bootstrap = Bootstrap(app)
 
 from flask_sqlalchemy import SQLAlchemy
 
