@@ -3,6 +3,7 @@
 {% block body %}
 {{ error }}
 <form method="POST" action="{{ url_for('auth_login') }}">
+    {{ form.csrf_token }}
     <table>
         <tr>
             <td>

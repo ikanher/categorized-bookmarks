@@ -1,8 +1,11 @@
 import os
 from flask import Flask
 from flask_bcrypt import Bcrypt
+from flask_wtf.csrf import CSRFProtect
+
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+csrf = CSRFProtect(app)
 
 from flask_sqlalchemy import SQLAlchemy
 
