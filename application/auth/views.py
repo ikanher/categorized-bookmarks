@@ -11,21 +11,24 @@ def auth_login():
         return render_template('auth/login_form.html', form=LoginForm())
 
     form = LoginForm(request.form)
-    if not form.validate():
-        return render_template("auth/login_form.html", form=form)
 
-    user = User.query.filter_by(username=form.username.data).first()
-    if not user:
-        return render_template('auth/login_form.html', form=form, error='No such username or password')
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if not user:
+            return render_template('auth/login_form.html', form=form,
+                    error='No such username or password')
 
-    if not bcrypt.check_password_hash(user.password, form.password.data):
-        return render_template('auth/login_form.html', form=form, error='No such username or password')
+        if not bcrypt.check_password_hash(user.password, form.password.data):
+            return render_template('auth/login_form.html', form=form,
+                    error='No such username or password')
 
-    login_user(user)
+        login_user(user)
 
-    flash('Successful login! Welcome %s' % user.name)
+        flash('Successful login! Welcome %s' % user.name)
 
-    return redirect(url_for('index'))
+        return redirect(url_for('index'))
+
+    return render_template("auth/login_form.html", form=form)
 
 @app.route('/auth/register', methods=['GET', 'POST'])
 def auth_register():
@@ -33,24 +36,27 @@ def auth_register():
         return render_template('auth/register_form.html', form=RegisterForm())
 
     form = RegisterForm(request.form)
-    if not form.validate():
-        return render_template("auth/register_form.html", form=form)
 
-    user = User.query.filter_by(username=form.username.data).first()
-    if user:
-        return render_template('auth/register_form.html', form=form, error='Username exists, choose another username')
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            return render_template('auth/register_form.html', form=form,
+                    error='Username exists, choose another username')
 
-    if form.password.data != form.password_confirm.data:
-        return render_template('auth/register_form.html', form=form, error='Passwords do not match')
+        if form.password.data != form.password_confirm.data:
+            return render_template('auth/register_form.html', form=form,
+                    error='Passwords do not match')
 
-    pw_hash = bcrypt.generate_password_hash(form.password.data)
-    new_user = User(form.fullname.data, form.username.data, pw_hash)
-    db.session().add(new_user)
-    db.session().commit()
+        pw_hash = bcrypt.generate_password_hash(form.password.data)
+        new_user = User(form.fullname.data, form.username.data, pw_hash)
+        db.session().add(new_user)
+        db.session().commit()
 
-    flash('Registration complete. Please log in using your brand new account!')
+        flash('Registration complete. Please log in using your brand new account!')
 
-    return redirect(url_for('auth_login'))
+        return redirect(url_for('auth_login'))
+
+    return render_template("auth/register_form.html", form=form)
 
 @app.route('/auth/logout')
 def auth_logout():

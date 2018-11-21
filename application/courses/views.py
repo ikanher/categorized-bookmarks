@@ -24,17 +24,17 @@ def courses_view(id):
 def courses_create():
     form = CourseForm(request.form)
 
-    if not form.validate():
-        return render_template("courses/create.html", form=form)
+    if form.validate_on_submit():
+        c = Course(form.name.data, form.location.data)
 
-    c = Course(form.name.data, form.location.data)
+        db.session().add(c)
+        db.session().commit()
 
-    db.session().add(c)
-    db.session().commit()
+        flash("Course %s created" % c.name)
 
-    flash("Course %s created" % c.name)
+        return redirect(url_for("courses_list"))
 
-    return redirect(url_for("courses_list"))
+    return render_template("courses/create.html", form=form)
 
 @app.route('/courses/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -47,17 +47,18 @@ def courses_edit(id):
 
     form = CourseForm(request.form)
     form.id = id
-    if not form.validate():
-        return render_template("courses/edit.html", form=form)
 
-    c = Course.query.get(id)
-    c.name = form.name.data
-    c.location = form.location.data
-    db.session.commit()
+    if form.validate_on_submit():
+        c = Course.query.get(id)
+        c.name = form.name.data
+        c.location = form.location.data
+        db.session.commit()
 
-    flash("Course %s saved" % c.name)
+        flash("Course %s saved" % c.name)
 
-    return redirect(url_for("courses_list"))
+        return redirect(url_for("courses_list"))
+
+    return render_template("courses/edit.html", form=form)
 
 @app.route('/courses/delete/<int:id>', methods=['GET'])
 @login_required
