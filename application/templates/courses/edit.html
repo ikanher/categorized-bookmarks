@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<form method="POST" action="{{ url_for('courses_edit', id=form.id) }}">
+<form method="POST" action="{{ url_for('courses_edit', id=course_id) }}">
     {{ form.hidden_tag() }}
     {{ wtf.form_errors(form, hiddens="only") }}
     {{ wtf.form_field(form.name) }}

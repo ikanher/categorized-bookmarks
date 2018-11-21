@@ -42,11 +42,9 @@ def courses_edit(id):
     if request.method == 'GET':
         c = Course.query.get(id)
         form = CourseForm(obj=c)
-        form.id = id
-        return render_template('courses/edit.html', form=form)
+        return render_template('courses/edit.html', form=form, course_id=id)
 
     form = CourseForm(request.form)
-    form.id = id
 
     if form.validate_on_submit():
         c = Course.query.get(id)
