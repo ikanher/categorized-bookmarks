@@ -19,6 +19,21 @@
             </td>
         </tr>
         <tr>
+            <td>
+                {{ form.location.label }}
+            </td>
+            <td>
+                {{ form.location }}
+            </td>
+            <td>
+                <ul>
+                    {% for error in form.location.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
             <td colspan="2">
                 <input type="submit" value="Add a new course"/>
             </td>

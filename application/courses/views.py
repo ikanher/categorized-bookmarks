@@ -27,7 +27,7 @@ def courses_create():
     if not form.validate():
         return render_template("courses/create.html", form=form)
 
-    c = Course(form.name.data)
+    c = Course(form.name.data, form.location.data)
 
     db.session().add(c)
     db.session().commit()
@@ -52,6 +52,7 @@ def courses_edit(id):
 
     c = Course.query.get(id)
     c.name = form.name.data
+    c.location = form.location.data
     db.session.commit()
 
     flash("Course %s saved" % c.name)

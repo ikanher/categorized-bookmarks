@@ -3,11 +3,19 @@
 {% block body %}
 <table>
     <tr>
-        <th>Name</th>
+        <td>
+            Course name
+        </td>
+        <td>
+            {{ course.name }}
+        </td>
     </tr>
     <tr>
         <td>
-            {{ course.name }}
+            Course location
+        </td>
+        <td>
+            {{ course.location }}
         </td>
     </tr>
 </table>

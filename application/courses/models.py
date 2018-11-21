@@ -1,8 +1,10 @@
 from application import db
+from application.models import Base
 
-class Course(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+class Course(Base):
     name = db.Column(db.String(200), nullable=False)
+    location = db.Column(db.String(200), nullable=False)
 
-    def __init__(self, name):
+    def __init__(self, name, location):
         self.name = name
+        self.location = location
