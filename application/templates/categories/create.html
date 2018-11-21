@@ -1,13 +1,11 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
-<form method="POST" action="{{ url_for('courses_edit', id=course_id) }}">
+<form method="POST" action="{{ url_for('categories_create') }}">
     {{ form.hidden_tag() }}
     {{ wtf.form_errors(form, hiddens="only") }}
     {{ wtf.form_field(form.name) }}
-    {{ wtf.form_field(form.location) }}
+    {{ wtf.form_field(form.description) }}
     {{ wtf.form_field(form.save) }}
 </form>
-
 {% endblock %}

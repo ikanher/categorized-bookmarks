@@ -3,5 +3,5 @@ from application import app
 
 @app.route("/")
 def index():
-    return redirect(url_for("courses_list"))
+    return redirect(url_for("categories_list"))
 

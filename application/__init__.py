@@ -16,7 +16,7 @@ bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 
 from application import views
-from application.courses import models, views
+from application.categories import models, views
 from application.auth import models
 from application.auth import views
 from application.auth.models import User

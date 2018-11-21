@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-            <title>Disc Golf Statistics</title>
+            <title>Categorized Bookmarks</title>
     </head>
 
     <body>
@@ -25,9 +25,9 @@
             <a href="{{ url_for('auth_register') }}">Register</a>
         {% endif %}
         <ul>
-            <li><a href="{{ url_for('courses_list') }}">List courses</a></li>
+            <li><a href="{{ url_for('categories_list') }}">List Categories</a></li>
         {% if current_user.is_authenticated %}
-            <li><a href="{{ url_for('courses_form') }}">Add a course</a></li>
+            <li><a href="{{ url_for('categories_form') }}">Add a category</a></li>
         {% endif %}
         </ul>
         {% block body %}

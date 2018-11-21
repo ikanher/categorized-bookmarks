@@ -4,19 +4,22 @@
 <table>
     <tr>
         <td>
-            Course name
+            Category name
         </td>
         <td>
-            {{ course.name }}
+            {{ category.name }}
         </td>
     </tr>
     <tr>
         <td>
-            Course location
+            Category location
         </td>
         <td>
-            {{ course.location }}
+            {{ category.location }}
         </td>
     </tr>
+    <pre>
+        {{ category.bookmarks }}
+    </pre>
 </table>
 {% endblock %}

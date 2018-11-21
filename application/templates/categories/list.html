@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Category</th>
+        {% if current_user.is_authenticated %}
+            <th>Actions</th>
+        {% endif %}
+        </tr>
+    {% for category in categories %}
+        <tr>
+            <td><a href="{{ url_for('categories_view', id=category.id) }}">{{ category.name }}</a></td>
+        {% if current_user.is_authenticated %}
+            <td>
+                <a href="{{ url_for('categories_edit', id=category.id) }}">Edit</a>
+                <a href="{{ url_for('categories_delete', id=category.id) }}">Delete</a>
+                <a href="{{ url_for('categories_add_bookmark', category_id=category.id) }}">Add bookmark</a>
+            </td>
+        {% endif %}
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
