@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Text</th>
+            <th>Link</th>
+            <th>Actions</th>
+        </tr>
+    {% for bookmark in bookmarks %}
+        <tr>
+            <td>{{ bookmark.text }}</a></td>
+            <td>{{ bookmark.link }}</a></td>
+            <td>
+                <a href="{{ url_for('bookmarks_delete', id=bookmark.id) }}">Delete</a>
+                <form method="POST" action="{{ url_for('bookmarks_add_category', bookmark_id=bookmark.id) }}">
+                    {{ form.hidden_tag() }}
+                    {{ wtf.form_errors(form, hiddens="only") }}
+                    {{ wtf.form_field(form.category) }} {{ wtf.form_field(form.add) }}
+                </form>
+            </td>
+            <td>
+                <tr>
+                    {% for category in bookmark.categories %}
+                        <td>{{ category.name }}</td>
+                    {% endfor %}
+                </tr>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

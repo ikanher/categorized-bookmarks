@@ -24,12 +24,14 @@
             <a href="{{ url_for('auth_login') }}">Login</a>
             <a href="{{ url_for('auth_register') }}">Register</a>
         {% endif %}
+        {% if current_user.is_authenticated %}
         <ul>
             <li><a href="{{ url_for('categories_list') }}">List Categories</a></li>
-        {% if current_user.is_authenticated %}
-            <li><a href="{{ url_for('categories_form') }}">Add a category</a></li>
-        {% endif %}
+            <li><a href="{{ url_for('categories_create') }}">Add a category</a></li>
+            <li><a href="{{ url_for('bookmarks_list') }}">List Bookmarks</a></li>
+            <li><a href="{{ url_for('bookmarks_create') }}">Add a bookmark</a></li>
         </ul>
+        {% endif %}
         {% block body %}
         <p>
             Content.

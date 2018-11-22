@@ -1,5 +1,10 @@
 from application import db
 
+categorybookmark = db.Table('categorybookmark',
+    db.Column('category_id', db.Integer, db.ForeignKey('category.id')),
+    db.Column('bookmark_id', db.Integer, db.ForeignKey('bookmark.id'))
+)
+
 class Base(db.Model):
 
     __abstract__ = True

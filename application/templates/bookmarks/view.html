@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<table>
+    <tr>
+        <td>
+            Bookmark link
+        </td>
+        <td>
+            {{ bookmark.link }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Bookmark text
+        </td>
+        <td>
+            {{ bookmark.text }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Bookmark description
+        </td>
+        <td>
+            {{ bookmark.description }}
+        </td>
+    </tr>
+    <pre>
+        {{ bookmark.categories }}
+    </pre>
+</table>
+{% endblock %}
