@@ -1,6 +1,6 @@
 from application import app, db
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from application.categories.models import Category
 from application.categories.forms import CategoryForm
@@ -8,7 +8,8 @@ from application.categories.forms import CategoryForm
 @app.route('/categories/', methods=['GET'])
 @login_required
 def categories_list():
-    return render_template('categories/list.html', categories=Category.query.all())
+    return render_template('categories/list.html',
+            categories=Category.query.filter(Category.user_id == current_user.id))
 
 @app.route('/categories/view/<int:id>', methods=['GET'])
 @login_required
@@ -25,7 +26,7 @@ def categories_create():
     form = CategoryForm(request.form)
 
     if form.validate_on_submit():
-        c = Category(form.name.data, form.description.data)
+        c = Category(form.name.data, form.description.data, current_user.id)
 
         db.session().add(c)
         db.session().commit()
