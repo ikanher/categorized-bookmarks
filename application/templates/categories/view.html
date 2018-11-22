@@ -12,14 +12,25 @@
     </tr>
     <tr>
         <td>
-            Category location
+            Category description
         </td>
         <td>
-            {{ category.location }}
+            {{ category.description }}
         </td>
     </tr>
-    <pre>
-        {{ category.bookmarks }}
-    </pre>
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <th>Bookmarks in this category:</th>
+                </tr>
+                {% for bookmark in category.bookmarks %}
+                <tr>
+                    <td><a href="{{ bookmark.link }}">{{ bookmark.text }}</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
 </table>
 {% endblock %}
