@@ -8,8 +8,7 @@ from application.categories.forms import CategoryForm
 @app.route('/categories/', methods=['GET'])
 @login_required
 def categories_list():
-    return render_template('categories/list.html',
-            categories=Category.query.filter(Category.user_id == current_user.id))
+    return render_template('categories/list.html', categories=current_user.categories)
 
 @app.route('/categories/view/<int:id>', methods=['GET'])
 @login_required
