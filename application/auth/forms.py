@@ -4,7 +4,7 @@ from wtforms import PasswordField, StringField, SubmitField, validators
 class LoginForm(FlaskForm):
     username = StringField('Username', [validators.DataRequired()])
     password = PasswordField('Password', [validators.DataRequired()])
-    login = SubmitField('Login')
+    login = SubmitField('Let me in!')
 
 class RegisterForm(FlaskForm):
     fullname = StringField('Full name',

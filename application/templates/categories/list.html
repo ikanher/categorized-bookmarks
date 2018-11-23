@@ -1,24 +1,27 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <table>
-        <tr>
-            <th>Category</th>
-        {% if current_user.is_authenticated %}
-            <th>Actions</th>
-        {% endif %}
-        </tr>
+<div class="container">
+    <ul class="list-group">
     {% for category in categories %}
-        <tr>
-            <td><a href="{{ url_for('categories_view', id=category.id) }}">{{ category.name }}</a></td>
-        {% if current_user.is_authenticated %}
-            <td>
-                <a href="{{ url_for('categories_edit', id=category.id) }}">Edit</a>
-                <a href="{{ url_for('categories_delete', id=category.id) }}">Delete</a>
-                <a href="{{ url_for('categories_add_bookmark', category_id=category.id) }}">Add bookmark</a>
-            </td>
-        {% endif %}
-        </tr>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('categories_view', id=category.id) }}">{{ category.name }}</a>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Actions
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{{ url_for('categories_edit', id=category.id) }}" role="button">Edit</a>
+                    <a class="dropdown-item" href="{{ url_for('categories_delete', id=category.id) }}" role="button">Delete</a>
+                </div>
+            </div>
+            <!--
+                TODO: Add number of bookmarks here
+            <span class="badge badge-primary badge-pill">14</span>
+            -->
+        </li>
     {% endfor %}
-    </table>
+    </ul>
+</div>
+
 {% endblock %}

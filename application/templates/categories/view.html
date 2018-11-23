@@ -1,36 +1,18 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<table>
-    <tr>
-        <td>
-            Category name
-        </td>
-        <td>
-            {{ category.name }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Category description
-        </td>
-        <td>
-            {{ category.description }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <table>
-                <tr>
-                    <th>Bookmarks in this category:</th>
-                </tr>
-                {% for bookmark in category.bookmarks %}
-                <tr>
-                    <td><a href="{{ bookmark.link }}">{{ bookmark.text }}</a></td>
-                </tr>
-                {% endfor %}
-            </table>
-        </td>
-    </tr>
-</table>
+<div class="container">
+    <h3>
+        {{ category.name }}
+        <small class="text-muted">{{ category.description }}</small>
+    </h3>
+    <h5>Bookmarks in this category</h5>
+    <ul class="list-group">
+        {% for bookmark in category.bookmarks %}
+        <li class="list-group-item">
+            <a href="{{ bookmark.link }}">{{ bookmark.text }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

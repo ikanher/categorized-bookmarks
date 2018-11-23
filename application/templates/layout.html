@@ -4,38 +4,30 @@
     <head>
         <meta charset="utf-8">
             <title>Categorized Bookmarks</title>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
 
     <body>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-        {% endwith %}
-        {% if current_user.is_authenticated %}
-        <p>
-            User: {{ current_user.name }}. <a href="{{ url_for('auth_logout') }}">Logout</a>
-        </p>
-        {% else %}
-            <a href="{{ url_for('auth_login') }}">Login</a>
-            <a href="{{ url_for('auth_register') }}">Register</a>
-        {% endif %}
-        {% if current_user.is_authenticated %}
-        <ul>
-            <li><a href="{{ url_for('categories_list') }}">List Categories</a></li>
-            <li><a href="{{ url_for('categories_create') }}">Add a category</a></li>
-            <li><a href="{{ url_for('bookmarks_list') }}">List Bookmarks</a></li>
-            <li><a href="{{ url_for('bookmarks_create') }}">Add a bookmark</a></li>
-        </ul>
-        {% endif %}
-        {% block body %}
-        <p>
-            Content.
-        </p>
-        {% endblock %}
+        <div class="container">
+            {% include "navbar.html" %}
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-primary" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% block body %}
+            <p>
+                Content.
+            </p>
+            {% endblock %}
+        </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
 </html>
