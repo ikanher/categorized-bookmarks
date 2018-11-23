@@ -21,6 +21,7 @@ def bookmarks_create():
 
     if form.validate_on_submit():
         b = Bookmark(form.link.data, form.text.data, form.description.data)
+        b.categories.append(form.category.data)
 
         db.session().add(b)
         db.session().commit()
