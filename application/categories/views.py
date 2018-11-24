@@ -2,6 +2,7 @@ from application import app, db
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 
+from application.bookmarks.models import Bookmark
 from application.categories.models import Category
 from application.categories.forms import CategoryForm
 

@@ -15,10 +15,7 @@
                     <a class="dropdown-item" href="{{ url_for('categories_delete', id=category.id) }}" role="button">Delete</a>
                 </div>
             </div>
-            <!--
-                TODO: Add number of bookmarks here
-            <span class="badge badge-primary badge-pill">14</span>
-            -->
+            <span class="badge badge-primary badge-pill">{{ category.bookmark_count() }}</span>
         </li>
     {% endfor %}
     </ul>
