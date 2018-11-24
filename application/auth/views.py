@@ -16,16 +16,16 @@ def auth_login():
         user = User.query.filter_by(username=form.username.data).first()
 
         if user is None or not bcrypt.check_password_hash(user.password, form.password.data):
-            flash('Invalid username or password')
+            flash('Invalid username or password', 'alert-danger')
             return render_template('auth/login_form.html', form=form)
 
         login_user(user)
 
-        flash('Successful login! Welcome %s' % user.name)
+        flash('Successful login! Welcome %s' % user.name, 'alert-success')
 
         return redirect(url_for('index'))
 
-    return render_template("auth/login_form.html", form=form)
+    return render_template('auth/login_form.html', form=form)
 
 @app.route('/auth/register', methods=['GET', 'POST'])
 def auth_register():
@@ -37,7 +37,7 @@ def auth_register():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
-            flash('Username exists, choose another one')
+            flash('Username exists, choose another one', 'alert-warning')
             return render_template('auth/register_form.html', form=form)
 
         pw_hash = bcrypt.generate_password_hash(form.password.data)
@@ -45,14 +45,14 @@ def auth_register():
         db.session().add(new_user)
         db.session().commit()
 
-        flash('Registration complete. Please log in using your brand new account!')
+        flash('Registration complete. Please log in using your brand new account!', 'alert-success')
 
         return redirect(url_for('auth_login'))
 
-    return render_template("auth/register_form.html", form=form)
+    return render_template('auth/register_form.html', form=form)
 
 @app.route('/auth/logout')
 def auth_logout():
     logout_user()
-    flash('Logged out')
+    flash('Logged out', 'alert-info')
     return redirect(url_for('index'))

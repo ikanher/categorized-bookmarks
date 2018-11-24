@@ -30,11 +30,11 @@ def categories_create():
         db.session().add(c)
         db.session().commit()
 
-        flash("Category %s created" % c.name)
+        flash('Category %s created' % c.name, 'alert-success')
 
-        return redirect(url_for("categories_list"))
+        return redirect(url_for('categories_list'))
 
-    return render_template("categories/create.html", form=form)
+    return render_template('categories/create.html', form=form)
 
 @app.route('/categories/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -52,11 +52,11 @@ def categories_edit(id):
         c.description = form.description.data
         db.session.commit()
 
-        flash("Category %s saved" % c.name)
+        flash('Category %s saved' % c.name, 'alert-success')
 
-        return redirect(url_for("categories_list"))
+        return redirect(url_for('categories_list'))
 
-    return render_template("categories/edit.html", form=form)
+    return render_template('categories/edit.html', form=form)
 
 @app.route('/categories/delete/<int:id>', methods=['GET'])
 @login_required
@@ -65,12 +65,6 @@ def categories_delete(id):
     db.session().delete(c)
     db.session().commit()
 
-    flash("Deleted category: %s" % c.name)
+    flash('Deleted category: %s' % c.name, 'alert-success')
 
-    return redirect(url_for("categories_list"))
-
-@app.route('/categories/add_bookmark/<int:category_id>', methods=['GET', 'POST'])
-@login_required
-def categories_add_bookmark(category_id):
-    pass
-
+    return redirect(url_for('categories_list'))

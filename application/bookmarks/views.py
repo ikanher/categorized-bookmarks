@@ -26,7 +26,7 @@ def bookmarks_create():
         db.session().add(b)
         db.session().commit()
 
-        flash("Bookmark %s created" % b.text)
+        flash('Bookmark %s created' % b.text, 'alert-success')
 
         return redirect(url_for('bookmarks_list'))
 
@@ -39,7 +39,7 @@ def bookmarks_delete(id):
     db.session().delete(b)
     db.session().commit()
 
-    flash('Deleted bookmark: %s' % b.text)
+    flash('Deleted bookmark: %s' % b.text, 'alert-success')
 
     return redirect(url_for('bookmarks_list'))
 

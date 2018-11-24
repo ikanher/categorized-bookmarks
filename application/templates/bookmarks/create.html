@@ -1,13 +1,11 @@
 {% extends "layout.html" %}
-
 {% block body %}
 <form method="POST" action="{{ url_for('bookmarks_create') }}">
     {{ form.hidden_tag() }}
-    {{ wtf.form_errors(form, hiddens="only") }}
-    {{ wtf.form_field(form.link) }}
-    {{ wtf.form_field(form.text) }}
-    {{ wtf.form_field(form.description) }}
-    {{ wtf.form_field(form.category) }}
+    {{ form_field(form.link) }}
+    {{ form_field(form.text) }}
+    {{ form_field(form.description) }}
+    {{ form_field(form.category) }}
     {{ wtf.form_field(form.save, class="btn btn-primary btn-md") }}
 </form>
 {% endblock %}

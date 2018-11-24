@@ -3,11 +3,10 @@
 {% block body %}
 <form method="POST" action="{{ url_for('auth_register') }}">
     {{ form.hidden_tag() }}
-    {{ wtf.form_errors(form, hiddens="only") }}
-    {{ wtf.form_field(form.fullname, autofocus=true) }}
-    {{ wtf.form_field(form.username) }}
-    {{ wtf.form_field(form.password) }}
-    {{ wtf.form_field(form.password_confirm) }}
+    {{ form_field(form.fullname, autofocus=true) }}
+    {{ form_field(form.username) }}
+    {{ form_field(form.password) }}
+    {{ form_field(form.password_confirm) }}
     {{ wtf.form_field(form.register, class="btn btn-primary btn-md") }}
 </form>
 {% endblock %}

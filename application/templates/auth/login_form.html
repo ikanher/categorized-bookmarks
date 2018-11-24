@@ -4,8 +4,8 @@
 <form method="POST" action="{{ url_for('auth_login') }}">
     {{ form.hidden_tag() }}
     {{ wtf.form_errors(form, hiddens="only") }}
-    {{ wtf.form_field(form.username, autofocus=true, size=3) }}
-    {{ wtf.form_field(form.password, size=32) }}
+    {{ wtf.form_field(form.username, autofocus=true) }}
+    {{ wtf.form_field(form.password) }}
     {{ wtf.form_field(form.login, class="btn btn-primary btn-md") }}
 </form>
 {% endblock %}
