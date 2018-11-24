@@ -1,0 +1,17 @@
+{% macro form_field(field, autofocus=false) %}
+    <div class="form-group">
+    {{ field.label }}
+    {% if field.errors %}
+        {{ field(class='form-control is-invalid') }}
+    {% else %}
+        {% if autofocus %}
+        {{ field(class='form-control', autofocus=true) }}
+        {% else %}
+        {{ field(class='form-control') }}
+        {% endif %}
+    {% endif %}
+    {% for error in field.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %}
+    </div>
+{% endmacro %}
