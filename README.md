@@ -16,6 +16,8 @@ To have better structure for browsing the bookmarks the system should provide ca
 
 Bookmarks should also be searchable. It would also be interesting to see some high-level information such as how many bookmarks does a category have.
 
+Aki would be ecstatic if categories could also contain other categories as subcategories!
+
 ## Documentation
 
 [User stories](documentation/user-stories.md)
