@@ -5,19 +5,25 @@
     <ul class="list-group">
         {% for bookmark in bookmarks %}
         <li class="list-group-item d-flex justify-content-between align-items-center">
-            <a href="{{ bookmark.link }}">
-            {% if bookmark.text %}
-                {{ bookmark.text }}
-            {% else %}
-                {{ bookmark.link }}
-            {% endif %}
-            </a>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Actions
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{{ url_for('bookmarks_delete', id=bookmark.id) }}" role="button">Delete</a>
+            <div class="container">
+                <div class="row">
+                    <div class="col-9">
+                        <a href="{{ bookmark.link }}">
+                        {% if bookmark.text %}
+                            {{ bookmark.text }}
+                        {% else %}
+                            {{ bookmark.link }}
+                        {% endif %}
+                        </a>
+                    </div>
+                    <div class="dropdown col">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Actions
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ url_for('bookmarks_delete', id=bookmark.id) }}" role="button">Delete</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </li>

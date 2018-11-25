@@ -1,23 +1,14 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">Categorized Bookmarks</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarPrimary">
         <ul class="navbar-nav mr-auto">
             {% if current_user.is_authenticated %}
             <li class="nav-item {% if request.path == '/categories/' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('categories_list') }}">List categories </a>
-            </li>
-            <li class="nav-item {% if request.path == '/categories/create' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('categories_create') }}">Add a category </a>
+                <a class="nav-link" href="{{ url_for('categories_list') }}">Categories</a>
             </li>
             <li class="nav-item {% if request.path == '/bookmarks/' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('bookmarks_list') }}">List bookmarks </a>
-            </li>
-            <li class="nav-item {% if request.path == '/bookmarks/create' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('bookmarks_create') }}">Add a bookmark </a>
+                <a class="nav-link" href="{{ url_for('bookmarks_list') }}">Bookmarks</a>
             </li>
             {% endif %}
         </ul>
@@ -40,3 +31,13 @@
         </ul>
     </div>
 </nav>
+{% if current_user.is_authenticated %}
+<div class="container">
+    {% if request.path == '/categories/' %}
+        {% include "navbar-secondary-categories.html" %}
+    {% endif %}
+    {% if request.path == '/bookmarks/' %}
+        {% include "navbar-secondary-bookmarks.html" %}
+    {% endif %}
+</div>
+{% endif %}

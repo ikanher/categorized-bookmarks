@@ -1,0 +1,10 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light py-0">
+  <a class="navbar-brand py-0" href="/bookmarks/">Bookmarks</a>
+
+  <div class="collapse navbar-collapse" id="navbarSecondary">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link py-0 {% if request.path == '/bookmarks/create' %}active{% endif %}" href="{{ url_for('bookmarks_create') }}">Create</a>
+      </li>
+  </div>
+</nav>
