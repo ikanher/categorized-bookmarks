@@ -54,5 +54,5 @@ def auth_register():
 @app.route('/auth/logout')
 def auth_logout():
     logout_user()
-    flash('Logged out', 'alert-info')
+    flash('Logged out', 'alert-success')
     return redirect(url_for('index'))
