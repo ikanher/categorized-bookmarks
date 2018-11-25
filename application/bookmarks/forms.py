@@ -6,7 +6,7 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField, QuerySelectF
 from application.categories.models import Category
 
 class BookmarkBaseForm(FlaskForm):
-    category = QuerySelectField(
+    categories = QuerySelectMultipleField(
             query_factory=lambda: current_user.categories,
             get_label=lambda c: c.name,
             validators=[validators.DataRequired()])

@@ -21,7 +21,7 @@ def bookmarks_create():
 
     if form.validate_on_submit():
         b = Bookmark(form.link.data, form.text.data, form.description.data)
-        b.categories.append(form.category.data)
+        b.categories = form.categories.data
 
         db.session().add(b)
         db.session().commit()
@@ -31,6 +31,31 @@ def bookmarks_create():
         return redirect(url_for('bookmarks_list'))
 
     return render_template('bookmarks/create.html', form=form)
+
+@app.route('/bookmarks/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def bookmarks_edit(id):
+    if request.method == 'GET':
+        b = Bookmark.query.get(id)
+        form = BookmarkForm(obj=b)
+        return render_template('bookmarks/edit.html', form=form, bookmark_id=id)
+
+    form = BookmarkForm(request.form)
+
+    if form.validate_on_submit():
+        b = Bookmark.query.get(id)
+        b.link = form.link.data
+        b.text = form.text.data
+        b.description = form.description.data
+        b.categories = form.categories.data
+        db.session.commit()
+
+        flash('Bookmark "%s" saved' % b.text, 'alert-success')
+
+        return redirect(url_for('bookmarks_list'))
+
+    return render_template('bookmarks/edit.html', form=form)
+
 
 @app.route('/bookmarks/delete/<int:id>', methods=['GET'])
 @login_required
@@ -49,9 +74,8 @@ def bookmarks_add_category(bookmark_id):
     form = BookmarkCategoryForm(request.form)
 
     if form.validate_on_submit():
-        category = form.category.data
         bookmark = Bookmark.query.get(bookmark_id)
-        bookmark.categories.append(category)
+        bookmark.categories = form.categories.data
         db.session().commit()
 
     return redirect(url_for('bookmarks_list'))
