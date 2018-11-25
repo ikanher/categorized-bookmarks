@@ -1,0 +1,10 @@
+{% if current_user.is_authenticated %}
+<div class="container">
+    {% if request.path == '/categories/' %}
+        {% include "categories/navbar-secondary.html" %}
+    {% endif %}
+    {% if request.path == '/bookmarks/' %}
+        {% include "bookmarks/navbar-secondary.html" %}
+    {% endif %}
+</div>
+{% endif %}

@@ -31,13 +31,3 @@
         </ul>
     </div>
 </nav>
-{% if current_user.is_authenticated %}
-<div class="container">
-    {% if request.path == '/categories/' %}
-        {% include "navbar-secondary-categories.html" %}
-    {% endif %}
-    {% if request.path == '/bookmarks/' %}
-        {% include "navbar-secondary-bookmarks.html" %}
-    {% endif %}
-</div>
-{% endif %}
