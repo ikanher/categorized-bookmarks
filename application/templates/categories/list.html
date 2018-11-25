@@ -8,13 +8,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-6">
-                        <a href="{{ url_for('categories_view', id=category.id) }}">{{ category.name }}</a>
+                        <a href="{{ url_for('categories_view', id=category.id) }}" title="Category name">{{ category.name }}</a>
                     </div>
                     <div class="col">
-                        <span class="badge badge-primary badge-pill">{{ category.bookmark_count() }}</span>
+                        <span class="badge badge-primary badge-pill" data-toggle="tooltip" data-placement="right" title="# of bookmarks">{{ category.bookmark_count() }}</span>
                     </div>
                     <div class="dropdown col">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" title="Click to expand" aria-haspopup="true" aria-expanded="false">
                             Actions
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

@@ -1,31 +1,28 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">Categorized Bookmarks</a>
+    <a class="navbar-brand" href="/" title="Back to home">Categorized Bookmarks</a>
 
     <div class="collapse navbar-collapse" id="navbarPrimary">
         <ul class="navbar-nav mr-auto">
             {% if current_user.is_authenticated %}
             <li class="nav-item {% if request.path == '/categories/' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('categories_list') }}">Categories</a>
+                <a class="nav-link" href="{{ url_for('categories_list') }}" title="Manage categories">Categories</a>
             </li>
             <li class="nav-item {% if request.path == '/bookmarks/' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('bookmarks_list') }}">Bookmarks</a>
+                <a class="nav-link" href="{{ url_for('bookmarks_list') }}" title="Manage bookmarks">Bookmarks</a>
             </li>
             {% endif %}
         </ul>
         <ul class="navbar-nav my-2 my-lg-0">
             {% if current_user.is_authenticated %}
             <li class="nav-item">
-                <p class="navbar-text navbar-light">User: {{ current_user.name }} --</p>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('auth_logout') }}"> Logout</a>
+                <a class="nav-link" href="{{ url_for('auth_logout') }}" data-toggle="tooltip" data-placement="left" title="Logged in as: {{ current_user.name }}">Logout</a>
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('auth_login') }}">Login</a>
+                <a class="nav-link" href="{{ url_for('auth_login') }}" data-toggle="tooltip" data-placement="bottom" title="Already have an account?">Login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('auth_register') }}">Register</a>
+                <a class="nav-link" href="{{ url_for('auth_register') }}" data-toggle="tooltip" data-placement="bottom" title="New user? Register here.">Register</a>
             </li>
             {% endif %}
         </ul>

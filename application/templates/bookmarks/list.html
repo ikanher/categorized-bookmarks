@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-9">
-                        <a href="{{ bookmark.link }}">
+                        <a href="{{ bookmark.link }}" title="Click to open in new tab">
                         {% if bookmark.text %}
                             {{ bookmark.text }}
                         {% else %}
@@ -17,7 +17,7 @@
                         </a>
                     </div>
                     <div class="dropdown col">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" title="Click to expand" aria-haspopup="true" aria-expanded="false">
                             Actions
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
