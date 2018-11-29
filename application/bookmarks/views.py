@@ -1,6 +1,6 @@
 from application import app,db
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from application.bookmarks.models import Bookmark
 from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm
@@ -8,7 +8,7 @@ from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm
 @app.route('/bookmarks/', methods=['GET'])
 @login_required
 def bookmarks_list():
-    return render_template('bookmarks/list.html', bookmarks=Bookmark.query.all())
+    return render_template('bookmarks/list.html', bookmarks=current_user.bookmarks)
 
 @app.route('/bookmarks/create', methods=['GET', 'POST'])
 @login_required
@@ -19,7 +19,7 @@ def bookmarks_create():
     form = BookmarkForm(request.form)
 
     if form.validate_on_submit():
-        b = Bookmark(form.link.data, form.text.data, form.description.data)
+        b = Bookmark(form.link.data, form.text.data, form.description.data, current_user.id)
         b.categories = form.categories.data
 
         db.session().add(b)

@@ -13,8 +13,10 @@ class User(Base):
     name = db.Column(db.String(200), nullable=False)
     username = db.Column(db.String(200), nullable=False)
     password = db.Column(db.Binary(60), nullable=False)
-    categories = db.relationship('Category', backref='user', lazy=True)
 
+    # relations
+    categories = db.relationship('Category', backref='user', lazy=True)
+    bookmarks = db.relationship('Bookmark', backref='user', lazy=True)
     roles = db.relationship('Role', secondary=userrole)
 
     def __init__(self, name, username, password):
@@ -46,6 +48,9 @@ class User(Base):
 
     def category_count(self):
         return len(self.categories)
+
+    def bookmark_count(self):
+        return len(self.bookmarks)
 
 class Role(db.Model):
 
