@@ -8,8 +8,7 @@ from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm
 @app.route('/bookmarks/', methods=['GET'])
 @login_required
 def bookmarks_list():
-    form = BookmarkCategoryForm()
-    return render_template('bookmarks/list.html', bookmarks=Bookmark.query.all(), form=form)
+    return render_template('bookmarks/list.html', bookmarks=Bookmark.query.all())
 
 @app.route('/bookmarks/create', methods=['GET', 'POST'])
 @login_required
