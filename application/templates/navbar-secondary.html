@@ -1,16 +1,10 @@
 {% if current_user.is_authenticated %}
 <div class="container">
-    <nav class="navbar navbar-expand navbar-light bg-light py-0">
-        <a class="navbar-brand py-0" href="/bookmarks/">Bookmarks</a>
-
-        <div class="collapse navbar-collapse" id="navbarSecondary">
-            {% if request.path == '/categories/' %}
-            {% include "categories/navbar-secondary.html" %}
-            {% endif %}
-            {% if request.path == '/bookmarks/' %}
-            {% include "bookmarks/navbar-secondary.html" %}
-            {% endif %}
-        </div>
-    </nav>
+    {% if request.path == '/categories/' %}
+    {% include "categories/navbar-contents.html" %}
+    {% endif %}
+    {% if request.path == '/bookmarks/' %}
+    {% include "bookmarks/navbar-contents.html" %}
+    {% endif %}
 </div>
 {% endif %}
