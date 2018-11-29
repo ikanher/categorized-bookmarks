@@ -14,6 +14,11 @@
             <li class="nav-item {% if request.path == '/bookmarks/' %}active{% endif %}">
                 <a class="nav-link" href="{{ url_for('bookmarks_list') }}" title="Manage bookmarks">Bookmarks</a>
             </li>
+            {% if current_user.is_admin() %}
+            <li class="nav-item {% if request.path == '/users/' %}active{% endif %}">
+                <a class="nav-link" href="{{ url_for('users_list') }}" title="Manage users">Users</a>
+            </li>
+            {% endif %}
             {% endif %}
         </ul>
         <ul class="navbar-nav">

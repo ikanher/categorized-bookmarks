@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+    <ul class="list-group">
+        <li class="list-group-item nav-header bg-light">
+            <div class="row">
+                <div class="col-5">Name</div>
+                <div class="col-3">Username</div>
+                <div class="col"># Categories</div>
+                <div class="col">Is admin</div>
+            </div>
+        </li>
+        {% for user in users %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-5">{{ user.name }}</div>
+                    <div class="col-3">{{ user.username }}</div>
+                    <div class="col">{{ user.category_count() }}</div>
+                    <div class="col">{{ user.is_admin() }}</div>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

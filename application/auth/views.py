@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user
 
 from application import app, db, bcrypt
-from application.auth.models import User
+from application.auth.models import User, Role
 from application.auth.forms import LoginForm, RegisterForm
 
 @app.route('/auth/login', methods=['GET', 'POST'])
@@ -43,13 +43,25 @@ def auth_register():
         pw_hash = bcrypt.generate_password_hash(form.password.data)
         new_user = User(form.fullname.data, form.username.data, pw_hash)
         db.session().add(new_user)
-        db.session().commit()
+
+        # if this is first user, create and associate admin role
+        if User.query.count() == 1:
+            grant_admin_role(new_user)
+            flash('First user created! User "%s" is now an administrator!' % new_user.username, 'alert-info')
 
         flash('Registration complete. Please log in using your brand new account!', 'alert-success')
+
+        db.session().commit()
 
         return redirect(url_for('auth_login'))
 
     return render_template('auth/register_form.html', form=form)
+
+def grant_admin_role(user):
+    admin_role = Role('admin')
+    db.session().add(admin_role)
+
+    user.roles.append(admin_role)
 
 @app.route('/auth/logout')
 def auth_logout():
