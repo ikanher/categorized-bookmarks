@@ -6,6 +6,8 @@ This repository is for Laboratory work for the course **Introduction to database
 
 App is running live at [Categorized Bookmarks](https://categorized-bookmarks.herokuapp.com/)
 
+There's an administrator account 'admin' with password 'admin12'.
+
 ## Description
 
 Aki is a computer enthuastic. He has never been happy with browser bookmarks, they have too little structure to be useful. He would love to have a better system.
@@ -19,6 +21,10 @@ Bookmarks should also be searchable. It would also be interesting to see some hi
 Aki would be ecstatic if categories could also contain other categories as subcategories!
 
 ## Documentation
+
+[Installation guide](documentation/install.md)
+
+[User guide](documentation/user-guide.md)
 
 [User stories](documentation/user-stories.md)
 
