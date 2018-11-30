@@ -19,22 +19,19 @@ class User(Base):
     bookmarks = db.relationship('Bookmark', backref='user', lazy=True)
     roles = db.relationship('Role', secondary=userrole)
 
+    # flask-login
+    is_active = True
+    is_anonymous = False
+    is_authenticated = True
+
     def __init__(self, name, username, password):
         self.name = name
         self.username = username
         self.password = password
 
+    # flask-login
     def get_id(self):
         return self.id
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def is_authenticated(self):
-        return True
 
     def has_role(self, role):
         for r in self.roles:
