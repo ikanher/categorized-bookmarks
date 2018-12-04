@@ -1,23 +1,29 @@
 # User stories
 
 ## User management
-- User can register
-- User can login
-- User can logout
+- [x] User can register
+- [x] User can login
+- [x] User can logout
 
 ## Category management
-- User can create a new category
-- User can list categories
-- User can delete a category
-- User can modify a category (name, description)
-- User can add bookmarks to a category
-- User can remove bookmarks from a category
-- User can view a category
-- User can add a bookmark to a category
+- [x] User can create a new category
+- [x] User can list categories
+- [x] User can delete a category
+- [x] User can modify a category (name, description)
+- [x] User can add bookmarks to a category
+- [x] User can remove bookmarks from a category
+- [x] User can view a category
+- [x] User can add a bookmark to a category
+- [x] User can not see or change other users' categories
 
 # Bookmark management
-- User can create a new bookmark
-- User can list bookmarks
-- User can edit an existing bookmark
-- User can add category to a bookmark
-- User can remove category from a bookmark
+- [x] User can create a new bookmark
+- [x] User can list bookmarks
+- [x] User can edit an existing bookmark
+- [x] User can add category to a bookmark
+- [x] User can remove category from a bookmark
+- [x] User can not see or change other users' bookmarks
+
+# Admin
+- [x] Admin can list users
+- [ ] Admin can delete a user

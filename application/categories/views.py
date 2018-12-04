@@ -1,4 +1,4 @@
-from application import app, db
+from application import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 
@@ -15,6 +15,10 @@ def categories_list():
 @login_required
 def categories_view(id):
     c = Category.query.get(id)
+
+    if not c in current_user.categories:
+        return login_manager.unauthorized()
+
     return render_template('categories/view.html', category=c)
 
 @app.route('/categories/create', methods=['GET', 'POST'])
@@ -40,15 +44,18 @@ def categories_create():
 @app.route('/categories/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def categories_edit(id):
+    c = Category.query.get(id)
+
+    if not c in current_user.categories:
+        return login_manager.unauthorized()
+
     if request.method == 'GET':
-        c = Category.query.get(id)
         form = CategoryForm(obj=c)
         return render_template('categories/edit.html', form=form, category_id=id)
 
     form = CategoryForm(request.form)
 
     if form.validate_on_submit():
-        c = Category.query.get(id)
         c.name = form.name.data
         c.description = form.description.data
         db.session.commit()
@@ -63,6 +70,10 @@ def categories_edit(id):
 @login_required
 def categories_delete(id):
     c = Category.query.get(id)
+
+    if not c in current_user.categories:
+        return login_manager.unauthorized()
+
     db.session().delete(c)
     db.session().commit()
 

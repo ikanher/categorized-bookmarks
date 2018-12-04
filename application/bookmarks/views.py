@@ -1,4 +1,4 @@
-from application import app,db
+from application import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 
@@ -48,15 +48,17 @@ def bookmarks_create():
 @app.route('/bookmarks/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def bookmarks_edit(id):
+    b = Bookmark.query.get(id)
+    if not b in current_user.bookmarks:
+        return login_manager.unauthorized()
+
     if request.method == 'GET':
-        b = Bookmark.query.get(id)
         form = BookmarkForm(obj=b)
         return render_template('bookmarks/edit.html', form=form, bookmark_id=id)
 
     form = BookmarkForm(request.form)
 
     if form.validate_on_submit():
-        b = Bookmark.query.get(id)
         b.link = form.link.data
         b.text = form.text.data
         b.description = form.description.data
@@ -74,6 +76,10 @@ def bookmarks_edit(id):
 @login_required
 def bookmarks_delete(id):
     b = Bookmark.query.get(id)
+
+    if not b in current_user.bookmarks:
+        return login_manager.unauthorized()
+
     db.session().delete(b)
     db.session().commit()
 
@@ -88,6 +94,10 @@ def bookmarks_add_category(bookmark_id):
 
     if form.validate_on_submit():
         bookmark = Bookmark.query.get(bookmark_id)
+
+        if not b in current_user.bookmarks:
+            return login_manager.unauthorized()
+
         bookmark.categories = form.categories.data
         db.session().commit()
 
