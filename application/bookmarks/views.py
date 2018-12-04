@@ -3,12 +3,26 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 
 from application.bookmarks.models import Bookmark
-from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm
+from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm, SelectCategoriesForm
 
-@app.route('/bookmarks/', methods=['GET'])
+@app.route('/bookmarks/', methods=['GET', 'POST'])
 @login_required
 def bookmarks_list():
-    return render_template('bookmarks/list.html', bookmarks=current_user.bookmarks)
+    # show all bookmarks
+    if request.method == 'GET':
+        return render_template('bookmarks/list.html',
+                bookmarks=current_user.bookmarks,
+                form=SelectCategoriesForm())
+
+    # show only bookmarks in selected categories
+    if request.method == 'POST':
+        form = SelectCategoriesForm(request.form)
+        categories = form.categories.data
+
+        # collect user's bookmarks that are in all selected categories
+        bookmarks = Bookmark.get_bookmarks_in_categories(categories)
+
+        return render_template('bookmarks/list.html', bookmarks=bookmarks, form=form)
 
 @app.route('/bookmarks/create', methods=['GET', 'POST'])
 @login_required

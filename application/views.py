@@ -3,5 +3,4 @@ from application import app
 
 @app.route("/")
 def index():
-    return redirect(url_for("categories_list"))
-
+    return redirect(url_for("bookmarks_list"))
