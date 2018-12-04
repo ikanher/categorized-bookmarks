@@ -1,8 +1,7 @@
-from sqlalchemy.sql import text
+from sqlalchemy import func
 
 from application import db
 from application.models import Base, categorybookmark
-from application.bookmarks.models import Bookmark
 
 class Category(Base):
     name = db.Column(db.String(200), nullable=False)
@@ -21,16 +20,12 @@ class Category(Base):
         self.user_id = user_id
 
     def bookmark_count(self):
-        stmt = text("SELECT COUNT(bookmark.id) FROM bookmark"
-                + " JOIN categorybookmark ON bookmark.id = categorybookmark.bookmark_id"
-                + " WHERE categorybookmark.category_id = :category_id"
-                + " GROUP BY categorybookmark.category_id").params(category_id=self.id)
+        count = db.session.query(func.count(Category.id))\
+                .join(categorybookmark)\
+                .filter(Category.id == self.id)\
+                .group_by(Category.id)\
+                .scalar()
 
-        res = db.engine.execute(stmt)
-        row = res.fetchone()
+        return count or 0
 
-        if row:
-            return row[0]
-
-        return 0
 

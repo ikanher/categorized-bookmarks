@@ -1,5 +1,5 @@
 from flask_login import current_user
-from sqlalchemy.sql import text
+from sqlalchemy import func
 
 from application import db
 from application.models import Base, categorybookmark
@@ -22,33 +22,22 @@ class Bookmark(Base):
         self.user_id = user_id
 
     def category_count(self):
-        stmt = text("SELECT COUNT(bookmark_id) FROM categorybookmark"
-                + " WHERE categorybookmark.bookmark_id = :bookmark_id").params(bookmark_id=self.id)
+        count = db.session.query(func.count(Bookmark.id))\
+                .join((categorybookmark, Bookmark.id == categorybookmark.c.bookmark_id))\
+                .filter(Bookmark.id == self.id)\
+                .scalar()
 
-        res = db.engine.execute(stmt)
-        row = res.fetchone()
-
-        if row:
-            return row[0]
-
-        return 0
-
+        return count or 0
 
     @staticmethod
     def get_bookmarks_in_categories(categories):
-        # collect user's bookmarks that are in all wanted categories
-        bookmarks = []
-        for bookmark in current_user.bookmarks:
-            is_in_all_categories = True
+        category_ids = [c.id for c in categories]
 
-            # loop through selected categories and check that bookmark is there
-            for category in categories:
-                if bookmark not in category.bookmarks:
-                    is_in_all_categories = False
-                    break
-
-            if is_in_all_categories:
-                bookmarks.append(bookmark)
+        # query for bookmarks in these categories
+        bookmarks = db.session().query(Bookmark)\
+                .join(categorybookmark)\
+                .filter(categorybookmark.c.category_id.in_(category_ids))\
+                .group_by(Bookmark.id)\
+                .having(func.count(Bookmark.id) >= len(categories))
 
         return bookmarks
-

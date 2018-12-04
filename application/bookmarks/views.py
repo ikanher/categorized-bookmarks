@@ -19,8 +19,12 @@ def bookmarks_list():
         form = SelectCategoriesForm(request.form)
         categories = form.categories.data
 
-        # collect user's bookmarks that are in all selected categories
-        bookmarks = Bookmark.get_bookmarks_in_categories(categories)
+        if not categories:
+            # show all user's bookmarks
+            bookmarks = current_user.bookmarks
+        else:
+            # collect user's bookmarks that are in all selected categories
+            bookmarks = Bookmark.get_bookmarks_in_categories(categories)
 
         return render_template('bookmarks/list.html', bookmarks=bookmarks, form=form)
 
