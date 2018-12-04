@@ -1,4 +1,5 @@
 from flask_login import current_user
+from sqlalchemy.sql import text
 
 from application import db
 from application.models import Base, categorybookmark
@@ -19,6 +20,19 @@ class Bookmark(Base):
         self.text = text
         self.description = description
         self.user_id = user_id
+
+    def category_count(self):
+        stmt = text("SELECT COUNT(bookmark_id) FROM categorybookmark"
+                + " WHERE categorybookmark.bookmark_id = :bookmark_id").params(bookmark_id=self.id)
+
+        res = db.engine.execute(stmt)
+        row = res.fetchone()
+
+        if row:
+            return row[0]
+
+        return 0
+
 
     @staticmethod
     def get_bookmarks_in_categories(categories):

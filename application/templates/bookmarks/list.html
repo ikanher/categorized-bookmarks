@@ -11,7 +11,7 @@
         <li class="list-group-item d-flex justify-content-between align-items-center">
             <div class="container">
                 <div class="row">
-                    <div class="col-9">
+                    <div class="col-8">
                         <a href="{{ bookmark.link }}" target="_blank" title="Click to open in new tab">
                         {% if bookmark.text %}
                             {{ bookmark.text }}
@@ -19,6 +19,9 @@
                             {{ bookmark.link }}
                         {% endif %}
                         </a>
+                    </div>
+                    <div class="col">
+                        <span class="badge badge-primary badge-pill" data-toggle="tooltip" data-placement="right" title="Included in {{ bookmark.category_count() }} categories">{{ bookmark.category_count() }}</span>
                     </div>
                     <div class="dropdown col">
                         <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" title="Click to expand" aria-haspopup="true" aria-expanded="false">
