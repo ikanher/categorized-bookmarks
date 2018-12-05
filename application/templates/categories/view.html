@@ -10,7 +10,7 @@
     <ul class="list-group">
         {% for bookmark in category.bookmarks %}
         <li class="list-group-item">
-            <a href="{{ bookmark.link }}">{{ bookmark.text }}</a>
+            <a href="{{ bookmark.link }}" title="{{ bookmark.text }}">{{ bookmark.text }}</a>
         </li>
         {% endfor %}
     </ul>

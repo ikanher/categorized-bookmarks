@@ -35,12 +35,18 @@ def auth_register():
     form = RegisterForm(request.form)
 
     if form.validate_on_submit():
+
+        # check if username exists
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             flash('Username exists, choose another one', 'alert-warning')
             return render_template('auth/register_form.html', form=form)
 
+
+        # create password hash with strong encryoption
         pw_hash = bcrypt.generate_password_hash(form.password.data)
+
+        # now we are ready to create the user
         new_user = User(form.fullname.data, form.username.data, pw_hash)
         db.session().add(new_user)
 
@@ -61,6 +67,7 @@ def grant_admin_role(user):
     admin_role = Role('admin')
     db.session().add(admin_role)
 
+    # this will be committed later
     user.roles.append(admin_role)
 
 @app.route('/auth/logout')
