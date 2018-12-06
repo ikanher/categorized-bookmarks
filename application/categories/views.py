@@ -32,6 +32,7 @@ def categories_create():
     if form.validate_on_submit():
         c = Category(form.name.data, form.description.data, current_user.id)
         c.bookmarks = form.bookmarks.data
+        c.children = form.children.data
 
         db.session().add(c)
         db.session().commit()
@@ -60,6 +61,8 @@ def categories_edit(id):
         c.name = form.name.data
         c.description = form.description.data
         c.bookmarks = form.bookmarks.data
+        c.children = form.children.data
+
         db.session.commit()
 
         flash('Category %s saved' % c.name, 'alert-success')

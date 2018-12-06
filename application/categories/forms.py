@@ -11,4 +11,10 @@ class CategoryForm(FlaskForm):
             get_label=lambda c: c.text,
             validators=[validators.NumberRange()])
 
+    children = QuerySelectMultipleField(
+            query_factory=lambda: current_user.categories,
+            get_label=lambda c: c.name,
+            label='Subcategories',
+            validators=[validators.NumberRange()])
+
     save = SubmitField('Save')

@@ -3,6 +3,11 @@ from sqlalchemy import func
 from application import db
 from application.models import Base, categorybookmark
 
+categoryinheritance = db.Table('categoryinheritance',
+    db.Column('parent_id', db.Integer, db.ForeignKey('category.id'), primary_key=True),
+    db.Column('child_id', db.Integer, db.ForeignKey('category.id'), primary_key=True)
+)
+
 class Category(Base):
     name = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(500))
@@ -13,6 +18,13 @@ class Category(Base):
         'Bookmark',
         secondary=categorybookmark,
         back_populates='categories')
+
+    children = db.relationship(
+        'Category',
+        secondary=categoryinheritance,
+        primaryjoin='Category.id==categoryinheritance.c.child_id',
+        secondaryjoin='Category.id==categoryinheritance.c.parent_id',
+        backref='parents')
 
     def __init__(self, name, description, user_id):
         self.name = name
@@ -27,5 +39,3 @@ class Category(Base):
                 .scalar()
 
         return count or 0
-
-
