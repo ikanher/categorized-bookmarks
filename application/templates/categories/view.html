@@ -1,46 +1,64 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="container">
-    <h3>
-        {{ category.name }}
-        <small class="text-muted">{{ category.description }}</small>
-    </h3>
+<div class="container pt-2 pb-0">
+    <div class="container">
+        <h3 class="bg-light">
+            {{ category.name }}
+            <small class="text-muted">{{ category.description }}</small>
+        </h3>
+    </div>
 
-    <h5>Bookmarks in this category</h5>
-    <ul class="list-group">
-        {% for bookmark in category.bookmarks %}
-        <li class="list-group-item">
-            <a href="{{ bookmark.link }}" title="{{ bookmark.text }}">{{ bookmark.text }}</a>
-        </li>
-        {% endfor %}
-    </ul>
+    <div class="container pt-2">
+        <h4 class="bg-light">Actions</h4>
+        <span style="display: inline">
+            <a href="{{ url_for('categories_edit', id=category.id) }}" role="button">Edit</a>
+            <a href="{{ url_for('categories_delete', id=category.id) }}" role="button">Delete</a>
+        </span>
+    </div>
 
-    {% if category.children %}
-    <h5>Subcategories</h5>
-    {% else %}
-    No subcategories.
-    {% endif %}
-    {% for child in category.children %}
-        Bookmarks in subcategory:
-        <a href="{{ url_for('categories_view', id=child.id) }}" title="View category {{ child.name }}">{{ child.name }}</a>
+    <div class="container pt-2 pb-2">
+        <h4 class="bg-light">
+            {% if category.bookmarks %}
+            Bookmarks in this category:
+            {% else %}
+            No bookmarks.
+            {% endif %}
+        </h4>
         <ul class="list-group">
-            {% for bookmark in child.bookmarks %}
+            {% for bookmark in category.bookmarks %}
             <li class="list-group-item">
                 <a href="{{ bookmark.link }}" title="{{ bookmark.text }}">{{ bookmark.text }}</a>
             </li>
             {% endfor %}
         </ul>
-    {% endfor %}
+    </div>
 
-    {% if category.parents %}
-    <h5>Parent categories:</h5>
-    {% else %}
-    No parent categories.
-    {% endif %}
-    {% with categories=category.parents %}
-    {% include 'categories/category-list.html' %}
-    {% endwith %}
+    <div class="container pt-2 border">
+        <h4 class="bg-light">
+            {% if category.children %}
+            Child categories:
+            {% else %}
+            No child categories.
+            {% endif %}
+        </h4>
+        {% with categories=category.children %}
+        {% include 'categories/category-list.html' %}
+        {% endwith %}
+    </div>
+
+    <div class="container pt-2 border">
+        <h4 class="bg-light">
+            {% if category.parents %}
+            Parent categories:
+            {% else %}
+            No parent categories.
+            {% endif %}
+        </h4>
+        {% with categories=category.parents %}
+        {% include 'categories/category-list.html' %}
+        {% endwith %}
+    </div>
 
 </div>
 {% endblock %}
