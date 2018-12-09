@@ -35,6 +35,7 @@ class Bookmark(Base):
 
         # query for bookmarks in these categories
         bookmarks = db.session().query(Bookmark)\
+                .filter(Bookmark.user_id == current_user.id)\
                 .join(categorybookmark)\
                 .filter(categorybookmark.c.category_id.in_(category_ids))\
                 .group_by(Bookmark.id)\
