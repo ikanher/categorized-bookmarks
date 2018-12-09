@@ -1,2 +1,0 @@
-[Account]1-*[Category],[Category]1-*[CategoryBookmark]
-[Bookmark]1-*[CategoryBookmark]

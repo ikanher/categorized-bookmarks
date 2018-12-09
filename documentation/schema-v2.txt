@@ -1,0 +1,14 @@
+[Account|-(PK) id: Integer; -date_created: Date; -date_modified Date; -name: String; -username: String; -password: Password]
+[Role|-(PK) id: Integer; -name: String;]
+[AccountRole|-(FK) account_id: Integer; -(FK) role_id: Integer;]
+
+[Bookmark|-(PK) id: Integer; -date_created: Date; -date_modified Date; -link: String; -text: String; -description: String; -(FK) user_id: Integer;]
+
+[Category|-(PK) id: Integer; -date_created: Date; -date_modified Date; -name: String; -description: String; -(FK) user_id: Integer;]
+
+[Categorybookmark|-(FK) category_id: Integer; -(FK) bookmark_id: Integer;]
+
+[Account]1-*[AccountRole],[Account]1-*[Category],[Account]1-*[Bookmark]
+[Role]1-*[AccountRole]
+[Category]1-*[CategoryBookmark]
+[Bookmark]1-*[CategoryBookmark]
