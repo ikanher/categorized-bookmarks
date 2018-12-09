@@ -1,8 +1,7 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // activate bootstrap tooltips
-    $('[data-toggle="tooltip"]').tooltip()
+const activateTooltips = () => $('[data-toggle="tooltip"]').tooltip()
+const dateToFooter = () => { let now = new Date(); $('#now').text(now) }
 
-    // date to footer
-    let now = new Date();
-    $('#now').text(now);
+document.addEventListener("DOMContentLoaded", function() {
+    activateTooltips()
+    dateToFooter()
 });
