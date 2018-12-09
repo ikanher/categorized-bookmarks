@@ -1,31 +1,5 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="container">
-    <ul class="list-group">
-    {% for category in categories %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-6">
-                        <a href="{{ url_for('categories_view', id=category.id) }}" title="Category name">{{ category.name }}</a>
-                    </div>
-                    <div class="col">
-                        <span class="badge badge-primary badge-pill" data-toggle="tooltip" data-placement="right" title="Contains {{ category.bookmark_count() }} bookmark(s)">{{ category.bookmark_count() }}</span>
-                    </div>
-                    <div class="dropdown col">
-                        <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" title="Click to expand" aria-haspopup="true" aria-expanded="false">
-                            Actions
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ url_for('categories_edit', id=category.id) }}" role="button">Edit</a>
-                            <a class="dropdown-item" href="{{ url_for('categories_delete', id=category.id) }}" role="button">Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-    {% endfor %}
-    </ul>
-</div>
+{% include 'categories/category-list.html' %}
 {% endblock %}

@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="card-deck">
+        {% for category in categories %}
+        {% include 'categories/category-card.html' %}
+        {% if loop.index == 2 %}
+        <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
+        {% elif loop.index == 3 %}
+        <div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>
+        {% elif loop.index == 4 %}
+        <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
+        {% elif loop.index == 6 %}
+        <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
+        <div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>
+        <div class="w-100 d-none d-lg-block d-xl-none"><!-- wrap every 6 on lg--></div>
+        <div class="w-100 d-none d-xl-block"><!-- wrap every 6 on xl--></div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>

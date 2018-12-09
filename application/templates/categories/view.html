@@ -6,6 +6,7 @@
         {{ category.name }}
         <small class="text-muted">{{ category.description }}</small>
     </h3>
+
     <h5>Bookmarks in this category</h5>
     <ul class="list-group">
         {% for bookmark in category.bookmarks %}
@@ -14,5 +15,32 @@
         </li>
         {% endfor %}
     </ul>
+
+    {% if category.children %}
+    <h5>Subcategories</h5>
+    {% else %}
+    No subcategories.
+    {% endif %}
+    {% for child in category.children %}
+        Bookmarks in subcategory:
+        <a href="{{ url_for('categories_view', id=child.id) }}" title="View category {{ child.name }}">{{ child.name }}</a>
+        <ul class="list-group">
+            {% for bookmark in child.bookmarks %}
+            <li class="list-group-item">
+                <a href="{{ bookmark.link }}" title="{{ bookmark.text }}">{{ bookmark.text }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+
+    {% if category.parents %}
+    <h5>Parent categories:</h5>
+    {% else %}
+    No parent categories.
+    {% endif %}
+    {% with categories=category.parents %}
+    {% include 'categories/category-list.html' %}
+    {% endwith %}
+
 </div>
 {% endblock %}

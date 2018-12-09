@@ -15,6 +15,8 @@
 - [x] User can view a category
 - [x] User can add a bookmark to a category
 - [x] User can not see or change other users' categories
+- [x] User can add categories as subcategories
+- [x] User can view subcategories of a category
 
 # Bookmark management
 - [x] User can create a new bookmark
@@ -22,7 +24,7 @@
 - [x] User can edit an existing bookmark
 - [x] User can add category to a bookmark
 - [x] User can remove category from a bookmark
-- [x] User can not see or change other users' bookmarks
+- [ ] User can not see or change other users' bookmarks
 
 # Admin
 - [x] Admin can list users

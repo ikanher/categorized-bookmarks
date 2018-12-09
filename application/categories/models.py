@@ -22,8 +22,8 @@ class Category(Base):
     children = db.relationship(
         'Category',
         secondary=categoryinheritance,
-        primaryjoin='Category.id==categoryinheritance.c.child_id',
-        secondaryjoin='Category.id==categoryinheritance.c.parent_id',
+        primaryjoin='Category.id==categoryinheritance.c.parent_id',
+        secondaryjoin='Category.id==categoryinheritance.c.child_id',
         backref='parents')
 
     def __init__(self, name, description, user_id):
@@ -36,6 +36,14 @@ class Category(Base):
                 .join(categorybookmark)\
                 .filter(Category.id == self.id)\
                 .group_by(Category.id)\
+                .scalar()
+
+        return count or 0
+
+    def subcategory_count(self):
+        count = db.session.query(func.count(Category.id))\
+                .join(categoryinheritance, Category.id==categoryinheritance.c.parent_id)\
+                .filter(Category.id == self.id)\
                 .scalar()
 
         return count or 0

@@ -1,6 +1,6 @@
 # Database schema
 
-Second draft, almost final.
+Third draft, probably final.
 
-<img src="./schema-v2.png"></img>
+<img src="./schema-v3.png"></img>
 

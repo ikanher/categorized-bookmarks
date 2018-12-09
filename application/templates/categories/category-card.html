@@ -1,0 +1,12 @@
+<a href="{{ url_for('categories_view', id=category.id) }}" class="card bg-light border-light mb-2 mt-2 mr-2 ml-2 shadow-sm category-card" role="button">
+    <div class="card-header">
+        {{ category.name }}
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            <span class="badge badge-primary badge-pill" title="# of bookmarks">{{ category.bookmark_count() }}</span>
+            <span class="badge badge-warning badge-pill" title="# of subcategories">{{ category.subcategory_count() }}</span>
+            {{ category.description }}
+        </p>
+    </div>
+</a>

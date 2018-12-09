@@ -6,9 +6,11 @@
 
 [Category|-(PK) id: Integer; -date_created: Date; -date_modified Date; -name: String; -description: String; -(FK) user_id: Integer;]
 
-[Categorybookmark|-(FK) category_id: Integer; -(FK) bookmark_id: Integer;]
+[CategoryBookmark|-(FK) category_id: Integer; -(FK) bookmark_id: Integer;]
+[CategoryInheritance|-(FK) parent_id: Integer; -(FK) child_id: Integer;]
 
 [Account]1-*[AccountRole],[Account]1-*[Category],[Account]1-*[Bookmark]
 [Role]1-*[AccountRole]
-[Category]1-*[CategoryBookmark]
+[Category]1-*[CategoryBookmark],[Category]1-*[CategoryInheritance]
+[CategoryInheritance]1-*[Category]
 [Bookmark]1-*[CategoryBookmark]

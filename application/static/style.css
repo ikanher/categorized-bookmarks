@@ -1,0 +1,6 @@
+.category-card {
+    text-decoration: none !important;
+    max-width: 10rem;
+    min-width: 10rem;
+    color: inherit;
+}
