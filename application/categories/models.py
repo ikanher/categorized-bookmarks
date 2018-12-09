@@ -1,3 +1,4 @@
+from flask_login import current_user
 from sqlalchemy import func
 
 from application import db
@@ -47,3 +48,13 @@ class Category(Base):
                 .scalar()
 
         return count or 0
+
+    @staticmethod
+    def root_categories():
+        child_ids = db.session().query(categoryinheritance.c.child_id)
+        categories = db.session().query(Category)\
+                .filter(Category.user_id == current_user.id)\
+                .filter(~Category.id.in_(child_ids))\
+                .all()
+
+        return categories

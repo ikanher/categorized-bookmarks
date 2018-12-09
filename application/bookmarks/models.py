@@ -1,8 +1,9 @@
 from flask_login import current_user
-from sqlalchemy import func
+from sqlalchemy import func, or_, or_, or_, or_
 
 from application import db
 from application.models import Base, categorybookmark
+from application.categories.models import categoryinheritance
 
 class Bookmark(Base):
     link = db.Column(db.String(2000), nullable=False)
@@ -33,11 +34,15 @@ class Bookmark(Base):
     def get_bookmarks_in_categories(categories):
         category_ids = [c.id for c in categories]
 
-        # query for bookmarks in these categories
+        # load child categories for all wanted categories
+        child_category_ids = db.session().query(categoryinheritance.c.child_id)\
+                .filter(categoryinheritance.c.parent_id.in_(category_ids))\
+
+        # query for bookmarks in these categories and subcategories
         bookmarks = db.session().query(Bookmark)\
                 .filter(Bookmark.user_id == current_user.id)\
                 .join(categorybookmark)\
-                .filter(categorybookmark.c.category_id.in_(category_ids))\
+                .filter(or_(categorybookmark.c.category_id.in_(category_ids), categorybookmark.c.category_id.in_(child_category_ids)))\
                 .group_by(Bookmark.id)\
                 .having(func.count(Bookmark.id) >= len(categories))
 
