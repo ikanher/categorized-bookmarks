@@ -8,6 +8,7 @@
                 <div class="col-5">Name</div>
                 <div class="col-3">Username</div>
                 <div class="col"># Categories</div>
+                <div class="col"># Bookmarks</div>
                 <div class="col">Is admin</div>
             </div>
         </li>
@@ -18,6 +19,7 @@
                     <div class="col-5">{{ user.name }}</div>
                     <div class="col-3">{{ user.username }}</div>
                     <div class="col">{{ user.category_count() }}</div>
+                    <div class="col">{{ user.bookmark_count() }}</div>
                     <div class="col">{{ user.is_admin() }}</div>
                 </div>
             </div>
