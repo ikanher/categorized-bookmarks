@@ -8,11 +8,16 @@ from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm, Sele
 @app.route('/bookmarks/', methods=['GET', 'POST'])
 @login_required
 def bookmarks_list():
-    # show all bookmarks
     if request.method == 'GET':
-        return render_template('bookmarks/list.html',
-                bookmarks=current_user.bookmarks,
-                form=SelectCategoriesForm())
+        if request.args.get('uncategorized'):
+            # list only uncategorized bookmarks
+            return render_template('bookmarks/list.html',
+                    bookmarks=Bookmark.get_uncategorized_bookmarks())
+        else:
+            # show all bookmarks
+            return render_template('bookmarks/list.html',
+                    bookmarks=current_user.bookmarks,
+                    form=SelectCategoriesForm())
 
     # show only bookmarks in selected categories
     if request.method == 'POST':

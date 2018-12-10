@@ -8,7 +8,7 @@ class SelectCategoriesForm(FlaskForm):
     categories = QuerySelectMultipleField(
             query_factory=lambda: Category.root_categories(),
             get_label=lambda c: c.name,
-            validators=[validators.DataRequired()])
+            validators=[validators.NumberRange()])
 
 class BookmarkForm(SelectCategoriesForm):
     link = StringField('Link', [validators.URL()])

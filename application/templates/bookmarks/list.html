@@ -2,10 +2,12 @@
 
 {% block body %}
 <div class="container">
+    {% if form %}
     <form method="POST" action="{{ url_for('bookmarks_list') }}">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.categories, class="selectpicker bg-light", **{'onchange': 'this.form.submit()', 'data-live-search': 'true'}) }}
     </form>
+    {% endif %}
     <ul class="list-group">
         {% for bookmark in bookmarks %}
         <li class="list-group-item d-flex justify-content-between align-items-center">

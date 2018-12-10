@@ -34,7 +34,7 @@ class Bookmark(Base):
     def get_bookmarks_in_categories(categories):
         category_ids = [c.id for c in categories]
 
-        # load child categories for all wanted categories
+        # subquery for child categories for all wanted categories
         child_category_ids = db.session().query(categoryinheritance.c.child_id)\
                 .filter(categoryinheritance.c.parent_id.in_(category_ids))\
 
@@ -45,5 +45,18 @@ class Bookmark(Base):
                 .filter(or_(categorybookmark.c.category_id.in_(category_ids), categorybookmark.c.category_id.in_(child_category_ids)))\
                 .group_by(Bookmark.id)\
                 .having(func.count(Bookmark.id) >= len(categories))
+
+        return bookmarks
+
+    @staticmethod
+    def get_uncategorized_bookmarks():
+        # subquery for ids of uncategorized bookmarks
+        bookmark_ids = db.session().query(categorybookmark.c.bookmark_id)
+
+        # query for bookmarks that do not belong to a category
+        bookmarks = db.session().query(Bookmark)\
+                .filter(Bookmark.user_id == current_user.id)\
+                .filter(Bookmark.id.notin_(bookmark_ids))\
+                .all()
 
         return bookmarks
