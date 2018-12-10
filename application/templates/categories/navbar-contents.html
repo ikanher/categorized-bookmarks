@@ -7,7 +7,7 @@
                 <a class="nav-link py-0 {% if request.endpoint == 'categories_list' %}active{% endif %}" href="{{ url_for('categories_list') }}" data-toggle="tooltip" data-placement="right" title="List categories" >List</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link py-0" href="{{ url_for('categories_create') }}" data-toggle="tooltip" data-placement="right" title="Create a new category">Create</a>
+                <a class="nav-link py-0 {% if request.endpoint == 'categories_create' %}active{% endif %}" href="{{ url_for('categories_create') }}" data-toggle="tooltip" data-placement="right" title="Create a new category">Create</a>
             </li>
         </ul>
     </div>

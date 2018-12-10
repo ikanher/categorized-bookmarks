@@ -1,5 +1,11 @@
 {% extends "layout.html" %}
 
 {% block body %}
-{% include 'categories/category-list.html' %}
+<div class="container">
+    {% if not categories %}
+    No categories.
+    {% endif %}
+
+    {% include 'categories/category-list.html' %}
+</div>
 {% endblock %}
