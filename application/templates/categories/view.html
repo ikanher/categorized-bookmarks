@@ -9,14 +9,6 @@
         </h3>
     </div>
 
-    <div class="container pt-2">
-        <h4 class="bg-light">Actions</h4>
-        <span style="display: inline">
-            <a href="{{ url_for('categories_edit', id=category.id) }}" role="button">Edit</a>
-            <a href="{{ url_for('categories_delete', id=category.id) }}" role="button">Delete</a>
-        </span>
-    </div>
-
     <div class="container pt-2 pb-2">
         <h4 class="bg-light">
             {% if category.bookmarks %}
