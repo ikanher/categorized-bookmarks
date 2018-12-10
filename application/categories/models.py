@@ -24,8 +24,13 @@ class Category(Base):
         'Category',
         secondary=categoryinheritance,
         primaryjoin='Category.id==categoryinheritance.c.parent_id',
-        secondaryjoin='Category.id==categoryinheritance.c.child_id',
-        backref='parents')
+        secondaryjoin='Category.id==categoryinheritance.c.child_id')
+
+    parents = db.relationship(
+        'Category',
+        secondary=categoryinheritance,
+        primaryjoin='Category.id==categoryinheritance.c.child_id',
+        secondaryjoin='Category.id==categoryinheritance.c.parent_id')
 
     def __init__(self, name, description, user_id):
         self.name = name

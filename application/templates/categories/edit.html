@@ -8,6 +8,7 @@
     {{ form_field(form.description) }}
     {{ wtf.form_field(form.bookmarks, class="selectpicker bg-light", **{'data-live-search': 'true', 'data-width': '50%'}) }}
     {{ wtf.form_field(form.children, class="selectpicker bg-light", **{'data-live-search': 'true', 'data-width': '50%'}) }}
+    {{ wtf.form_field(form.parents, class="selectpicker bg-light", **{'data-live-search': 'true', 'data-width': '50%'}) }}
     {{ wtf.form_field(form.save, class="btn btn-primary btn-md") }}
 </form>
 

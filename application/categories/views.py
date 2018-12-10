@@ -33,6 +33,7 @@ def categories_create():
         c = Category(form.name.data, form.description.data, current_user.id)
         c.bookmarks = form.bookmarks.data
         c.children = form.children.data
+        c.parents = form.parents.data
 
         db.session().add(c)
         db.session().commit()
@@ -62,6 +63,7 @@ def categories_edit(id):
         c.description = form.description.data
         c.bookmarks = form.bookmarks.data
         c.children = form.children.data
+        c.parents = form.parents.data
 
         db.session.commit()
 

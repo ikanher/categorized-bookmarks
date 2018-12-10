@@ -6,6 +6,7 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
 class CategoryForm(FlaskForm):
     name = StringField('Category name', [validators.DataRequired(), validators.Length(max=200)])
     description = TextAreaField('Category description', [validators.Optional(), validators.Length(max=500)])
+
     bookmarks = QuerySelectMultipleField(
             query_factory=lambda: current_user.bookmarks,
             get_label=lambda c: c.text,
@@ -14,7 +15,13 @@ class CategoryForm(FlaskForm):
     children = QuerySelectMultipleField(
             query_factory=lambda: current_user.categories,
             get_label=lambda c: c.name,
-            label='Subcategories',
+            label='Child categories',
+            validators=[validators.NumberRange()])
+
+    parents = QuerySelectMultipleField(
+            query_factory=lambda: current_user.categories,
+            get_label=lambda c: c.name,
+            label='Parent categories',
             validators=[validators.NumberRange()])
 
     save = SubmitField('Save')
