@@ -5,12 +5,6 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
 
 from application.categories.models import Category
 
-class SelectRootCategoriesForm(FlaskForm):
-    categories = QuerySelectMultipleField(
-            query_factory=lambda: Category.root_categories(),
-            get_label=lambda c: c.name,
-            validators=[validators.NumberRange()])
-
 class SelectCategoriesForm(FlaskForm):
     categories = QuerySelectMultipleField(
             query_factory=lambda: current_user.categories,

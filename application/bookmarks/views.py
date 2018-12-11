@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 
 from application.bookmarks.models import Bookmark
-from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm, SelectCategoriesForm, SelectRootCategoriesForm
+from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm, SelectCategoriesForm
 
 @app.route('/bookmarks/', methods=['GET', 'POST'])
 @login_required
@@ -17,11 +17,11 @@ def bookmarks_list():
             # show all bookmarks
             return render_template('bookmarks/list.html',
                     bookmarks=current_user.bookmarks,
-                    form=SelectRootCategoriesForm())
+                    form=SelectCategoriesForm())
 
     # show only bookmarks in selected categories
     if request.method == 'POST':
-        form = SelectRootCategoriesForm(request.form)
+        form = SelectCategoriesForm(request.form)
         categories = form.categories.data
 
         if not categories:
