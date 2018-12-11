@@ -33,32 +33,44 @@ class Bookmark(Base):
 
     @staticmethod
     def get_bookmarks_in_categories(categories):
-        # collect ids from categories
-        category_ids = [c.id for c in categories]
+        # fetch bookmarks that belong to all these categories
 
-        # load all child category ids
-        child_category_ids = Bookmark.get_child_categories(category_ids);
+        # first build all required queries and collect them
+        queries = []
+        for c in categories:
+            # get the ids of child categories recursively
+            category_ids = Bookmark.get_child_category_ids(c.id)
 
-        # append them for querying all categories
-        category_ids.extend(child_category_ids)
+            # add id of the root category
+            category_ids.append(c.id)
 
-        # query for bookmarks in these categories and subcategories
-        bookmarks = db.session().query(Bookmark)\
-                .filter(Bookmark.user_id == current_user.id)\
-                .join(categorybookmark)\
-                .filter(categorybookmark.c.category_id.in_(category_ids))\
-                .group_by(Bookmark.id)\
-                .having(func.count(Bookmark.id) >= len(categories))\
+            # query for bookmark ids in these categories
+            query = db.session.query(categorybookmark.c.bookmark_id)\
+                    .filter(categorybookmark.c.category_id.in_(category_ids))
+
+            # collect query for the next step
+            queries.append(query)
+
+        # now intersect all the collected queries to find
+        # bookmarks that belong in all of the wanted categories
+        bookmark_ids = queries.pop()
+        for q in queries:
+            bookmark_ids = bookmark_ids.intersect(q)
+
+        # now we have the query for the bookmark ids,
+        # let's use those to load the bookmark objects
+        bookmarks = db.session.query(Bookmark)\
+                .filter(Bookmark.id.in_(bookmark_ids))\
                 .all()
 
         return bookmarks
 
     @staticmethod
-    def get_child_categories(category_ids):
+    def get_child_category_ids(category_id):
         sql = """
 WITH RECURSIVE children (parent_id, child_id) AS (
     SELECT parent_id, child_id
-    FROM categoryinheritance WHERE parent_id IN (__PLACEHOLDER__)
+    FROM categoryinheritance WHERE parent_id = :category_id
 UNION
     SELECT ci.parent_id, ci.child_id
     FROM categoryinheritance ci
@@ -67,19 +79,9 @@ UNION
 SELECT child_id FROM children
         """
 
-        # create string to hold placeholder names for SQL
-        placeholder_str = ', '.join([':p'+str(i) for i in range(len(category_ids))])
+        stmt = text(sql).params(category_id=category_id)
 
-        # replace the placeholder placeholder in SQL with actual placeholder
-        sql = sql.replace('__PLACEHOLDER__', placeholder_str)
-
-        # map params to their values
-        params = {k: v for (k, v) in [('p'+str(i), category_ids[i]) for i in range(len(category_ids))]}
-
-        # now we are ready to execute the sql
-        stmt = text(sql).params(**params)
-
-        # done, fetch result
+        # fetch results
         res = db.engine.execute(stmt)
 
         # and collect values
@@ -88,7 +90,6 @@ SELECT child_id FROM children
             child_ids.append(row[0])
 
         return child_ids
-
 
     @staticmethod
     def get_uncategorized_bookmarks():
