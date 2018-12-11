@@ -5,7 +5,7 @@
     <div class="card-body">
         <p class="card-text">
             <span class="badge badge-primary badge-pill" title="# of bookmarks">{{ category.bookmark_count() }}</span>
-            <span class="badge badge-warning badge-pill" title="# of subcategories">{{ category.subcategory_count() }}</span>
+            <span class="badge badge-warning badge-pill" title="# of subcategories">{{ category.child_category_count() }}</span>
             {{ category.description }}
         </p>
     </div>

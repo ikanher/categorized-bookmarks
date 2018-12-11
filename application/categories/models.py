@@ -46,7 +46,7 @@ class Category(Base):
 
         return count or 0
 
-    def subcategory_count(self):
+    def child_category_count(self):
         count = db.session.query(func.count(Category.id))\
                 .join(categoryinheritance, Category.id==categoryinheritance.c.parent_id)\
                 .filter(Category.id == self.id)\
