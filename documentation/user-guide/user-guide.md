@@ -67,3 +67,41 @@ You can add a bookmark to a category from bookmark `Edit` view or alternatively 
 Click on `List uncategorized` in the bookmark navigarion bar.
 
 <img src="bookmark-list-uncategorized-link.png" width="50%" height="50%" />
+
+## Searching for bookmarks
+
+There are three different ways to search bookmarks, let's go through them one by one.
+
+### Text search
+
+Text search searches bookmark's link, text and description for match.
+
+Activate text search by clicking on `Search` link in the `Bookmarks` navigation bar.
+
+<img src="bookmark-search-link.png" width="50%" height="50%" />
+
+Now you can search all your bookmarks by entering search string to the input field and hitting enter or clicking `Search`.
+
+<img src="bookmark-search.png" width="75%" height="75%" />
+
+### Categories search
+
+There's a select field in bookmarks list page, where you can list bookmarks in one or more categories. When listing bookmarks in a category also the bookmarks in child categories will be listed. When opting for more than one category, then the bookmarks that are in _all_ those categories will be listed.
+
+<img src="bookmarks-in-categories.png" width="75%" height="75%" />
+
+### Category listing
+
+Finally it's possible to list bookmarks in categories from the `Categories` view. Click on the category to view it.
+
+<img src="category-view-link.png" width="75%" height="75%" />
+
+In the category view you can see the bookmarks in the category and the category's parent and child categories.
+
+<img src="category-view.png" width="75%" height="75%" />
+
+## Congratulations!
+
+Congratulations, you have now finished one the most demanding training session on earth!
+
+And special thanks from the author for actually reading this far!
