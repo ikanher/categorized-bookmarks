@@ -54,6 +54,14 @@ class Category(Base):
 
         return count or 0
 
+    def parent_category_count(self):
+        count = db.session.query(func.count(Category.id))\
+                .join(categoryinheritance, Category.id==categoryinheritance.c.child_id)\
+                .filter(Category.id == self.id)\
+                .scalar()
+
+        return count or 0
+
     @staticmethod
     def root_categories():
         child_ids = db.session().query(categoryinheritance.c.child_id)

@@ -48,7 +48,14 @@ JOIN CategoryInheritance ON CategoryInheritance.parent_id = Category.id
 WHERE Category.id = ?
 ```
 
-- [ ] User can see count of parent categories for a category
+- [x] User can see count of parent categories for a category
+
+```
+SELECT COUNT(Category.id)
+FROM Category
+JOIN CategoryInheritance ON CategoryInheritance.parent_id = Category.id
+WHERE CategoryInheritance.parent_id = ?
+```
 
 ## Bookmark management
 - [x] User can create a new bookmark
