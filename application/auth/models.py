@@ -15,8 +15,16 @@ class User(Base):
     password = db.Column(db.Binary(60), nullable=False)
 
     # relations
-    categories = db.relationship('Category', cascade='all,delete', backref='user', lazy=True)
-    bookmarks = db.relationship('Bookmark', cascade='all,delete', backref='user', lazy=True)
+    categories = db.relationship('Category',
+            cascade='all,delete', backref='user',
+            order_by="asc(Category.name)",
+            lazy=True)
+
+    bookmarks = db.relationship('Bookmark',
+            cascade='all,delete',
+            order_by="asc(Bookmark.text)",
+            backref='user',
+            lazy=True)
     roles = db.relationship('Role', secondary=userrole)
 
     # flask-login

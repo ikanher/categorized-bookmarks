@@ -12,22 +12,24 @@ categoryinheritance = db.Table('categoryinheritance',
 class Category(Base):
     name = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(500))
-    bookmarks = db.relationship('Bookmark', backref='category', lazy='dynamic')
     user_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
 
     bookmarks = db.relationship(
         'Bookmark',
+        order_by="asc(Bookmark.text)",
         secondary=categorybookmark,
         back_populates='categories')
 
     children = db.relationship(
         'Category',
+        order_by="asc(Category.name)",
         secondary=categoryinheritance,
         primaryjoin='Category.id==categoryinheritance.c.parent_id',
         secondaryjoin='Category.id==categoryinheritance.c.child_id')
 
     parents = db.relationship(
         'Category',
+        order_by="asc(Category.name)",
         secondary=categoryinheritance,
         primaryjoin='Category.id==categoryinheritance.c.child_id',
         secondaryjoin='Category.id==categoryinheritance.c.parent_id')
