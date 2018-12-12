@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <form method="POST" action="{{ url_for('bookmarks_create') }}">
+    {{ wtf.form_errors(form, hiddens="only") }}
     {{ form.hidden_tag() }}
     {{ form_field(form.link) }}
     {{ form_field(form.text) }}

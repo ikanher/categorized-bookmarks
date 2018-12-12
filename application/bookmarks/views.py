@@ -7,6 +7,7 @@ from application.bookmarks.forms import (
         BookmarkForm,
         BookmarkCategoryForm,
         SelectCategoriesForm,
+        SelectCategoriesFormWithSort,
         SearchForm,
         SortableForm)
 
@@ -24,7 +25,7 @@ def bookmarks_list():
             # show all bookmarks
             return render_template('bookmarks/list.html',
                     bookmarks=Bookmark.get_user_bookmarks(current_user.id),
-                    form=SelectCategoriesForm())
+                    form=SelectCategoriesFormWithSort())
 
     # list only uncategorized bookmarks if requested so
     if request.args.get('uncategorized'):
@@ -39,7 +40,7 @@ def bookmarks_list():
                 form=form)
 
     # show only bookmarks in selected categories
-    form = SelectCategoriesForm(request.form)
+    form = SelectCategoriesWithSortForm(request.form)
     sort_by = form.sort_by.data
     sort_direction = form.sort_direction.data
 

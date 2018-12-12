@@ -21,7 +21,13 @@ class SearchForm(SortableForm):
     search_field = StringField('Search', [validators.DataRequired()])
     search = SubmitField('Search')
 
-class SelectCategoriesForm(SortableForm):
+class SelectCategoriesFormWithSort(SortableForm):
+    categories = QuerySelectMultipleField(
+            query_factory=lambda: current_user.categories,
+            get_label=lambda c: c.name,
+            validators=[validators.NumberRange()])
+
+class SelectCategoriesForm(FlaskForm):
     categories = QuerySelectMultipleField(
             query_factory=lambda: current_user.categories,
             get_label=lambda c: c.name,
