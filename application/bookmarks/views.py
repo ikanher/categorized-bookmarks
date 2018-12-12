@@ -40,7 +40,7 @@ def bookmarks_list():
                 form=form)
 
     # show only bookmarks in selected categories
-    form = SelectCategoriesWithSortForm(request.form)
+    form = SelectCategoriesFormWithSort(request.form)
     sort_by = form.sort_by.data
     sort_direction = form.sort_direction.data
 
