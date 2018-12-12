@@ -103,3 +103,16 @@ SELECT child_id FROM children
                 .all()
 
         return bookmarks
+
+    @staticmethod
+    def search(keywords):
+        # wildcard search
+        keywords = '%' + keywords + '%'
+
+        # query bookmarks by link, text and description
+        bookmarks = db.session.query(Bookmark).filter(or_(\
+                Bookmark.link.like(keywords),\
+                Bookmark.text.like(keywords),\
+                Bookmark.description.like(keywords)))
+
+        return bookmarks

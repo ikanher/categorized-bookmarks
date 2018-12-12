@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 
 from application.bookmarks.models import Bookmark
-from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm, SelectCategoriesForm
+from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm, SelectCategoriesForm, SearchForm
 
 @app.route('/bookmarks/', methods=['GET', 'POST'])
 @login_required
@@ -111,3 +111,18 @@ def bookmarks_add_category(bookmark_id):
         db.session().commit()
 
     return redirect(url_for('bookmarks_list'))
+
+@app.route('/bookmarks/search', methods=['GET', 'POST'])
+@login_required
+def bookmarks_search():
+    if request.method == 'GET':
+        return render_template('bookmarks/search.html', form=SearchForm())
+
+    form = SearchForm(request.form)
+
+    if form.validate_on_submit():
+        keywords = form.search_field.data
+        bookmarks = Bookmark.search(keywords)
+        return render_template('bookmarks/search.html', form=form, bookmarks=bookmarks)
+
+    return render_template('bookmarks/search.html', form=form)

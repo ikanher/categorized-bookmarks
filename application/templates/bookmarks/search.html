@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+    <form method="POST" action="{{ url_for('bookmarks_search') }}">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+        {{ wtf.form_field(form.search_field, **{'onchange': 'this.form.submit()', 'autofocus': 1}) }}
+        {{ wtf.form_field(form.search, class="btn btn-primary btn-md mb-3") }}
+    </form>
+    {% include 'bookmarks/bookmark-list.html' %}
+{% endblock %}

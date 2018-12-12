@@ -5,6 +5,10 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
 
 from application.categories.models import Category
 
+class SearchForm(FlaskForm):
+    search_field = StringField('Search', [validators.DataRequired()])
+    search = SubmitField('Search')
+
 class SelectCategoriesForm(FlaskForm):
     categories = QuerySelectMultipleField(
             query_factory=lambda: current_user.categories,

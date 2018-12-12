@@ -8,39 +8,6 @@
         {{ wtf.form_field(form.categories, class="selectpicker bg-light", **{'onchange': 'this.form.submit()', 'data-live-search': 'true'}) }}
     </form>
     {% endif %}
-    {% if not bookmarks %}
-    No bookmarks.
-    {% endif %}
-    <ul class="list-group">
-        {% for bookmark in bookmarks %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8">
-                        <a href="{{ bookmark.link }}" target="_blank" title="Click to open in new tab">
-                        {% if bookmark.text %}
-                            {{ bookmark.text }}
-                        {% else %}
-                            {{ bookmark.link }}
-                        {% endif %}
-                        </a>
-                    </div>
-                    <div class="col">
-                        <span class="badge badge-primary badge-pill" data-toggle="tooltip" data-placement="right" title="Included in {{ bookmark.category_count() }} categories">{{ bookmark.category_count() }}</span>
-                    </div>
-                    <div class="dropdown col">
-                        <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" title="Click to expand" aria-haspopup="true" aria-expanded="false">
-                            Actions
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ url_for('bookmarks_edit', id=bookmark.id) }}" role="button">Edit</a>
-                            <a class="dropdown-item" href="{{ url_for('bookmarks_delete', id=bookmark.id) }}" role="button">Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
+    {% include 'bookmarks/bookmark-list.html' %}
 </div>
 {% endblock %}

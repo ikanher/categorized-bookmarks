@@ -7,6 +7,9 @@
                 <a class="nav-link py-0 {% if request.endpoint == 'bookmarks_list' %}active{% endif %}" href="{{ url_for('bookmarks_list') }}" title="List bookmarks" >List all</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link py-0 {% if request.endpoint == 'bookmarks_search' %}active{% endif %}" href="{{ url_for('bookmarks_search') }}" title="Search bookmarks" >Search</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link py-0 {% if request.endpoint == 'bookmarks_list_uncategorized' %}active{% endif %}" href="{{ url_for('bookmarks_list', uncategorized=1) }}" title="List uncategorized bookmarks" >List uncategorized</a>
             </li>
             <li class="nav-item">
