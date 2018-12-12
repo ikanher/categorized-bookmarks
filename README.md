@@ -24,7 +24,7 @@ Aki would be ecstatic if categories could also contain other categories as subca
 
 [Installation guide](documentation/install.md)
 
-[User guide](documentation/user-guide.md)
+[User guide](documentation/user-guide/user-guide.md)
 
 [User stories](documentation/user-stories.md)
 
