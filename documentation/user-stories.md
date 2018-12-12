@@ -18,6 +18,13 @@ The SQL provided is not the exactly same that SQLAlchemy generates, but it's sup
 - [x] User can not see or change other users' categories
 - [x] User can add categories as child categories
 - [x] User can view child categories of a category
+
+```
+SELECT * FROM Category
+JOIN CategoryInheritances ON CategoryInheritance.child_id = Category.id
+where CategoryInheritance.parent_id = ?
+```
+
 - [x] User can remove child categories from a category
 - [x] User has to confirm when deleting a category
 
@@ -27,7 +34,7 @@ The SQL provided is not the exactly same that SQLAlchemy generates, but it's sup
 ```
 SELECT COUNT(Category.id)
 FROM Category
-JOIN CategoryBookmark ON Category.id = CategoryBookmark.id
+JOIN CategoryBookmark ON Category.id = CategoryBookmark.category_id
 WHERE Category.id = ?
 GROUP BY Category.id
 ```
@@ -37,8 +44,8 @@ GROUP BY Category.id
 ```
 SELECT COUNT(Category.id)
 FROM Category
-JOIN CategoryInheritance ON CategoryInheritance.parent_id == Category.id
-WHERE Category.id == ?
+JOIN CategoryInheritance ON CategoryInheritance.parent_id = Category.id
+WHERE Category.id = ?
 ```
 
 - [ ] User can see count of parent categories for a category
