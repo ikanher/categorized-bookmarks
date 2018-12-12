@@ -24,7 +24,7 @@ Enter a category name and an optional description and click `Save`. Additionally
 
 <img src="category-create.png" width="30%" height="30%" />
 
-## Editing a new category
+## Editing an existing category
 
 Click on `Categories` from the navigation bar to activate categories list. Click on the category to view it.
 
