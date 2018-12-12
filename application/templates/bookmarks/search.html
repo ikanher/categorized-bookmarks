@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="container">
+<div class="container mt-2">
     <form method="POST" action="{{ url_for('bookmarks_search') }}">
         {{ form.hidden_tag() }}
         {{ wtf.form_errors(form, hiddens="only") }}
