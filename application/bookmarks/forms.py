@@ -34,8 +34,8 @@ class SelectCategoriesForm(FlaskForm):
             validators=[validators.NumberRange()])
 
 class BookmarkForm(SelectCategoriesForm):
-    link = StringField('Link', [validators.URL()])
-    text = StringField('Text', [validators.Length(max=2000), validators.Optional()])
+    link = StringField('Link', [validators.URL(), validators.DataRequired()])
+    text = StringField('Text', [validators.Length(max=2000), validators.DataRequired()])
     description = TextAreaField('Description', [validators.Length(max=2000), validators.Optional()])
     save = SubmitField('Save')
 
