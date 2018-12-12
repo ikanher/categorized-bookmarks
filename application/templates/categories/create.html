@@ -3,7 +3,7 @@
 {% block body %}
 <form method="POST" action="{{ url_for('categories_create') }}">
     {{ form.hidden_tag() }}
-    {{ form_field(form.name) }}
+    {{ form_field(form.name, autofocus=true) }}
     {{ form_field(form.description) }}
     {{ wtf.form_field(form.bookmarks, class="selectpicker bg-light", **{'data-live-search': 'true'}) }}
     {{ wtf.form_field(form.children, class="selectpicker bg-light", **{'data-live-search': 'true'}) }}

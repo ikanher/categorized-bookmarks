@@ -3,7 +3,7 @@
 <form method="POST" action="{{ url_for('bookmarks_create') }}">
     {{ wtf.form_errors(form, hiddens="only") }}
     {{ form.hidden_tag() }}
-    {{ form_field(form.link) }}
+    {{ form_field(form.link, autofocus=true) }}
     {{ form_field(form.text) }}
     {{ form_field(form.description) }}
     {{ wtf.form_field(form.categories, class="selectpicker bg-light", **{'data-live-search': 'true'}) }}
