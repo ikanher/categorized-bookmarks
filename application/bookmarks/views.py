@@ -67,6 +67,11 @@ def bookmarks_create():
     form = BookmarkForm(request.form)
 
     if form.validate_on_submit():
+
+        if Bookmark.exists(form.link.data, form.text.data):
+            flash('Bookmark already exists, please try again.', 'alert-danger')
+            return render_template('bookmarks/create.html', form=form)
+
         b = Bookmark(form.link.data, form.text.data, form.description.data, current_user.id)
         b.categories = form.categories.data
 

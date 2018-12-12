@@ -161,3 +161,11 @@ SELECT child_id FROM children
     @staticmethod
     def get_sort_directions():
         return [('asc', 'Ascending'), ('desc', 'Descending')];
+
+    @staticmethod
+    def exists(link, text):
+        exists = db.session.query(Bookmark.query\
+                .filter(or_(Bookmark.link == link, Bookmark.text == text)).exists())\
+                .scalar()
+
+        return exists

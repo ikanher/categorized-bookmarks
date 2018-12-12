@@ -18,6 +18,7 @@ The SQL provided is not the exactly same that SQLAlchemy generates, but it's sup
 - [x] User can not see or change other users' categories
 - [x] User can add categories as child categories
 - [x] User can view child categories of a category
+- [x] User can not create a category with an existing name
 
 ```
 SELECT * FROM Category
@@ -65,6 +66,7 @@ WHERE CategoryInheritance.parent_id = ?
 - [x] User can add category to a bookmark
 - [x] User can remove category from a bookmark
 - [x] User can not see or change other users' bookmarks
+- [x] User can not create a bookmark with an existing link or text
 
 ## Bookmark listing
 - [x] User can see count of categories the bookmark belongs in

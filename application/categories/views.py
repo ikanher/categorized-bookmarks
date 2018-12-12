@@ -30,6 +30,10 @@ def categories_create():
     form = CategoryForm(request.form)
 
     if form.validate_on_submit():
+        if Category.exists(form.name.data):
+            flash('Category already exists, please try again.', 'alert-danger')
+            return render_template('categories/create.html', form=form)
+
         c = Category(form.name.data, form.description.data, current_user.id)
         c.bookmarks = form.bookmarks.data
         c.children = form.children.data

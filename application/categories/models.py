@@ -63,3 +63,11 @@ class Category(Base):
                 .scalar()
 
         return count or 0
+
+    @staticmethod
+    def exists(name):
+        exists = db.session.query(Category.query\
+                .filter(Category.name == name).exists())\
+                .scalar()
+
+        return exists
