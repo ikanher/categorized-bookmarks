@@ -6,10 +6,11 @@
         <li class="list-group-item nav-header bg-light">
             <div class="row">
                 <div class="col-5">Name</div>
-                <div class="col-3">Username</div>
+                <div class="col-2">Username</div>
                 <div class="col"># Categories</div>
                 <div class="col"># Bookmarks</div>
                 <div class="col">Is admin</div>
+                <div class="col">Actions</div>
             </div>
         </li>
         {% for user in users %}
@@ -17,14 +18,18 @@
             <div class="container">
                 <div class="row">
                     <div class="col-5">{{ user.name }}</div>
-                    <div class="col-3">{{ user.username }}</div>
+                    <div class="col-2">{{ user.username }}</div>
                     <div class="col">{{ user.category_count() }}</div>
                     <div class="col">{{ user.bookmark_count() }}</div>
                     <div class="col">{{ user.is_admin() }}</div>
+                    <div class="col"><a class="delete-user-link" href="{{ url_for('users_delete', id=user.id) }}" title="Delete this user">Delete</a></div>
                 </div>
             </div>
         </li>
         {% endfor %}
     </ul>
 </div>
+<script>
+    document.querySelectorAll('a.delete-user-link').forEach(link => link.onclick = () => confirm('Are you sure you want to permanently delete this user?'))
+</script>
 {% endblock %}
