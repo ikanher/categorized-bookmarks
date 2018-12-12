@@ -3,7 +3,12 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 
 from application.bookmarks.models import Bookmark
-from application.bookmarks.forms import BookmarkForm, BookmarkCategoryForm, SelectCategoriesForm, SearchForm
+from application.bookmarks.forms import (
+        BookmarkForm,
+        BookmarkCategoryForm,
+        SelectCategoriesForm,
+        SearchForm,
+        SortableForm)
 
 @app.route('/bookmarks/', methods=['GET', 'POST'])
 @login_required
@@ -12,26 +17,45 @@ def bookmarks_list():
         if request.args.get('uncategorized'):
             # list only uncategorized bookmarks, no category selection
             return render_template('bookmarks/list.html',
-                    bookmarks=Bookmark.get_uncategorized_bookmarks())
+                    bookmarks=Bookmark.get_uncategorized_bookmarks(),
+                    uncategorized=1,
+                    form=SortableForm())
         else:
             # show all bookmarks
             return render_template('bookmarks/list.html',
-                    bookmarks=current_user.bookmarks,
+                    bookmarks=Bookmark.get_user_bookmarks(current_user.id),
                     form=SelectCategoriesForm())
 
+    # list only uncategorized bookmarks if requested so
+    if request.args.get('uncategorized'):
+        form = SortableForm(request.form)
+        sort_by = form.sort_by.data
+        sort_direction = form.sort_direction.data
+
+        bookmarks = Bookmark.get_uncategorized_bookmarks(sort_by, sort_direction)
+        return render_template('bookmarks/list.html',
+                uncategorized=1,
+                bookmarks=bookmarks,
+                form=form)
+
     # show only bookmarks in selected categories
-    if request.method == 'POST':
-        form = SelectCategoriesForm(request.form)
-        categories = form.categories.data
+    form = SelectCategoriesForm(request.form)
+    sort_by = form.sort_by.data
+    sort_direction = form.sort_direction.data
 
-        if not categories:
-            # show all user's bookmarks
-            bookmarks = current_user.bookmarks
-        else:
-            # collect user's bookmarks that are in all selected categories
-            bookmarks = Bookmark.get_bookmarks_in_categories(categories)
+    categories = form.categories.data
 
-        return render_template('bookmarks/list.html', bookmarks=bookmarks, form=form)
+    if not categories:
+        # show all user's bookmarks
+        bookmarks = Bookmark.get_user_bookmarks(current_user.id, sort_by, sort_direction)
+    else:
+        # collect user's bookmarks that are in all selected categories
+        bookmarks = Bookmark.get_bookmarks_in_categories(categories, sort_by, sort_direction)
+
+    return render_template('bookmarks/list.html',
+            uncategorized=request.args.get('uncategorized'),
+            bookmarks=bookmarks,
+            form=form)
 
 @app.route('/bookmarks/create', methods=['GET', 'POST'])
 @login_required
@@ -58,6 +82,7 @@ def bookmarks_create():
 @login_required
 def bookmarks_edit(id):
     b = Bookmark.query.get(id)
+
     if not b in current_user.bookmarks:
         return login_manager.unauthorized()
 
@@ -78,7 +103,7 @@ def bookmarks_edit(id):
 
         return redirect(url_for('bookmarks_list'))
 
-    return render_template('bookmarks/edit.html', form=form)
+    return redirect(url_for('bookmarks_list'))
 
 
 @app.route('/bookmarks/delete/<int:id>', methods=['GET'])
@@ -119,10 +144,12 @@ def bookmarks_search():
         return render_template('bookmarks/search.html', form=SearchForm())
 
     form = SearchForm(request.form)
+    sort_by = form.sort_by.data
+    sort_direction = form.sort_direction.data
 
     if form.validate_on_submit():
         keywords = form.search_field.data
-        bookmarks = Bookmark.search(keywords)
+        bookmarks = Bookmark.search(keywords, sort_by, sort_direction)
         return render_template('bookmarks/search.html', form=form, bookmarks=bookmarks)
 
     return render_template('bookmarks/search.html', form=form)

@@ -5,8 +5,13 @@
     <form method="POST" action="{{ url_for('bookmarks_search') }}">
         {{ form.hidden_tag() }}
         {{ wtf.form_errors(form, hiddens="only") }}
+        <div class="input-group">
+            {{ wtf.form_field(form.sort_by, class="selectpicker bg-light mr-3", **{'onchange': 'this.form.submit()'}) }}
+            {{ wtf.form_field(form.sort_direction, class="selectpicker bg-light", **{'onchange': 'this.form.submit()'}) }}
+        </div>
         {{ wtf.form_field(form.search_field, **{'onchange': 'this.form.submit()', 'autofocus': 1}) }}
         {{ wtf.form_field(form.search, class="btn btn-primary btn-md mb-3") }}
+        </input>
     </form>
     {% include 'bookmarks/bookmark-list.html' %}
 {% endblock %}

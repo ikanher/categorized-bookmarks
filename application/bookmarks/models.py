@@ -32,7 +32,31 @@ class Bookmark(Base):
         return count or 0
 
     @staticmethod
-    def get_bookmarks_in_categories(categories):
+    def get_user_bookmarks(user_id, sort_by=None, sort_direction=None):
+        bookmarks = db.session().query(Bookmark)\
+                .filter(Bookmark.user_id == user_id)
+
+        sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
+        bookmarks = bookmarks.order_by(sort_field)
+
+        return bookmarks.all()
+
+    @staticmethod
+    def get_sort_field(sort_by, sort_direction):
+        if sort_by:
+            sort_field = Bookmark.__table__.c[sort_by]
+        else:
+            sort_field = Bookmark.date_modified
+
+        if sort_direction == 'desc':
+            sort_field = sort_field.desc()
+        else:
+            sort_field = sort_field.asc()
+
+        return sort_field
+
+    @staticmethod
+    def get_bookmarks_in_categories(categories, sort_by=None, sort_direction=None):
         # fetch bookmarks that belong to all these categories
 
         # first build all required queries and collect them
@@ -60,10 +84,13 @@ class Bookmark(Base):
         # now we have the query for the bookmark ids,
         # let's use those to load the bookmark objects
         bookmarks = db.session.query(Bookmark)\
-                .filter(Bookmark.id.in_(bookmark_ids))\
-                .all()
+                .filter(Bookmark.id.in_(bookmark_ids))
 
-        return bookmarks
+        # sorting
+        sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
+        bookmarks = bookmarks.order_by(sort_field)
+
+        return bookmarks.all()
 
     @staticmethod
     def get_child_category_ids(category_id):
@@ -92,7 +119,7 @@ SELECT child_id FROM children
         return child_ids
 
     @staticmethod
-    def get_uncategorized_bookmarks():
+    def get_uncategorized_bookmarks(sort_by=None, sort_direction=None):
         # subquery for ids of uncategorized bookmarks
         bookmark_ids = db.session().query(categorybookmark.c.bookmark_id)
 
@@ -100,12 +127,14 @@ SELECT child_id FROM children
         bookmarks = db.session().query(Bookmark)\
                 .filter(Bookmark.user_id == current_user.id)\
                 .filter(Bookmark.id.notin_(bookmark_ids))\
-                .all()
 
-        return bookmarks
+        sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
+        bookmarks = bookmarks.order_by(sort_field)
+
+        return bookmarks.all()
 
     @staticmethod
-    def search(keywords):
+    def search(keywords, sort_by=None, sort_direction=None):
         # wildcard search
         keywords = '%' + keywords + '%'
 
@@ -115,4 +144,20 @@ SELECT child_id FROM children
                 Bookmark.text.like(keywords),\
                 Bookmark.description.like(keywords)))
 
-        return bookmarks
+        sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
+        bookmarks = bookmarks.order_by(sort_field)
+
+        return bookmarks.all()
+
+    @staticmethod
+    def get_sort_fields():
+        fields = []
+        fields.append(('date_modified', 'Modification time'))
+        fields.append(('text', 'Link text'))
+        fields.append(('link', 'Link URL'))
+
+        return fields
+
+    @staticmethod
+    def get_sort_directions():
+        return [('asc', 'Ascending'), ('desc', 'Descending')];

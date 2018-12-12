@@ -3,9 +3,19 @@
 {% block body %}
 <div class="container">
     {% if form %}
+    {% if uncategorized %}
+    <form method="POST" action="{{ url_for('bookmarks_list', uncategorized=1) }}">
+    {% else %}
     <form method="POST" action="{{ url_for('bookmarks_list') }}">
+    {% endif %}
         {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.categories, class="selectpicker bg-light", **{'onchange': 'this.form.submit()', 'data-live-search': 'true'}) }}
+        <div class="input-group mt-2">
+        {% if form.categories %}
+            {{ wtf.form_field(form.categories, class="selectpicker bg-light mr-3", **{'onchange': 'this.form.submit()', 'data-live-search': 'true'}) }}
+        {% endif %}
+            {{ wtf.form_field(form.sort_by, class="selectpicker bg-light mr-3", **{'onchange': 'this.form.submit()'}) }}
+            {{ wtf.form_field(form.sort_direction, class="selectpicker bg-light", **{'onchange': 'this.form.submit()'}) }}
+        </div>
     </form>
     {% endif %}
     {% include 'bookmarks/bookmark-list.html' %}
