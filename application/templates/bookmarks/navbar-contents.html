@@ -16,5 +16,17 @@
                 <a class="nav-link py-0 {% if request.endpoint == 'bookmarks_create' %}active{% endif %}" href="{{ url_for('bookmarks_create') }}" title="Create a new bookmark" >Create</a>
             </li>
         </ul>
+        <ul class="nav navbar-nav ml-auto">
+            <li>
+                <input class="form-control pull-right" id="filter_field" name="filter_field" type="text" size="50%" placeholder="Filter" />
+            </li>
+        </ul>
     </div>
 </nav>
+<script>
+    document.querySelector('#filter_field').onkeyup = () =>
+        document.querySelectorAll(".row.bookmark div a.bookmark-link")
+            .forEach(link => link.innerHTML.toLowerCase().includes(document.querySelector('#filter_field').value.toLowerCase())
+                ? link.parentNode.parentNode.parentNode.classList.remove('d-none')
+                : link.parentNode.parentNode.parentNode.classList.add('d-none'))
+</script>
