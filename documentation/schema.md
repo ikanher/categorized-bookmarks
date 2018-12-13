@@ -6,6 +6,7 @@
 
 ## Schema creation
 
+```sql
 CREATE TABLE account (
     id INTEGER NOT NULL,
     date_created DATETIME,
@@ -66,3 +67,4 @@ CREATE TABLE categoryinheritance (
     FOREIGN KEY(parent_id) REFERENCES category (id),
     FOREIGN KEY(child_id) REFERENCES category (id)
 );
+```

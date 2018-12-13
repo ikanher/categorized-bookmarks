@@ -20,7 +20,7 @@ The SQL provided is not the exactly same that SQLAlchemy generates, but it's sup
 - [x] **User can not create a category with an existing name**
 - [x] **User can view child categories of a category**
 
-```
+```sql
 SELECT * FROM Category
 JOIN CategoryInheritances ON CategoryInheritance.child_id = Category.id
 where CategoryInheritance.parent_id = ?
@@ -32,7 +32,7 @@ where CategoryInheritance.parent_id = ?
 # Category listing
 - [x] **User can see count of bookmarks in a category**
 
-```
+```sql
 SELECT COUNT(Category.id)
 FROM Category
 JOIN CategoryBookmark ON Category.id = CategoryBookmark.category_id
@@ -42,7 +42,7 @@ GROUP BY Category.id
 
 - [x] **User can see count of child categories in a category**
 
-```
+```sql
 SELECT COUNT(Category.id)
 FROM Category
 JOIN CategoryInheritance ON CategoryInheritance.parent_id = Category.id
@@ -51,7 +51,7 @@ WHERE Category.id = ?
 
 - [x] **User can see count of parent categories for a category**
 
-```
+```sql
 SELECT COUNT(Category.id)
 FROM Category
 JOIN CategoryInheritance ON CategoryInheritance.parent_id = Category.id
@@ -71,7 +71,7 @@ WHERE CategoryInheritance.parent_id = ?
 ## Bookmark listing
 - [x] **User can see count of categories the bookmark belongs in**
 
-```
+```sql
 SELECT COUNT(Bookmark.id)
 FROM Bookmark
 JOIN CategoryBookmark ON Bookmark.id = CategoryBookmark.bookmark_id
@@ -80,7 +80,7 @@ wHERE Bookmark.id = ?
 
 - [x] **User can list uncategorized bookmarks**
 
-```
+```sql
 SELECT * FROM Bookmark
 WHERE Bookmark.user_id = ?
 AND Bookmark.id NOT IN (
@@ -90,7 +90,7 @@ AND Bookmark.id NOT IN (
 
 - [x] **User can list bookmarks in a category**
 
-```
+```sql
 SELECT * FROM Bookmark
 JOIN CategoryBookmark ON CategoryBookmark.category_id = Bookmark.id
 WHERE CategoryBookmark.category_id = ?
@@ -102,7 +102,7 @@ So this is the only query not written using SQLAlchemy. It's doable in SQLAlchem
 
 To query for the tree hierarchy of parent-child relationships amongst categories the following query is used:
 
-```
+```sql
 WITH RECURSIVE children (parent_id, child_id) AS (
     SELECT parent_id, child_id
     FROM categoryinheritance WHERE parent_id = :category_id
@@ -126,7 +126,7 @@ Let's say category 2 has children 21, 22, 23. Category 5 has children 51, 58, 61
 
 Then we build query:
 
-```
+```sql
 SELECT Bookmark.id
 FROM CategoryBookmark
 WHERE Category.id IN (2, 21, 22, 23)
@@ -148,7 +148,7 @@ So basically all the bookmarks in the tree hierarchies are selected and then int
 
 After figuring out these `bookmark_ids` it just matter of simply query to get the bookmarks out of them.
 
-```
+```sql
 SELECT * FROM Bookmark WHERE Bookmark.id IN (bookmark_ids)
 ```
 
