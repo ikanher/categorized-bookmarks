@@ -22,7 +22,7 @@ The SQL provided is not the exactly same that SQLAlchemy generates, but it's sup
 
 ```sql
 SELECT * FROM Category
-JOIN CategoryInheritances ON CategoryInheritance.child_id = Category.id
+JOIN CategoryInheritance ON CategoryInheritance.child_id = Category.id
 where CategoryInheritance.parent_id = ?
 ```
 
