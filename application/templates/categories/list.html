@@ -8,4 +8,8 @@
 
     {% include 'categories/category-list.html' %}
 </div>
+<script>
+    document.querySelector('#filter_field').onkeyup = () =>
+        document.querySelectorAll('.category-card .card-header').forEach(link => link.innerText.toLowerCase().includes(document.querySelector('#filter_field').value.toLowerCase()) ? link.parentNode.classList.remove('d-none') : link.parentNode.classList.add('d-none'))
+</script>
 {% endblock %}
