@@ -1,5 +1,5 @@
 from flask_login import current_user
-from sqlalchemy import func, or_, text
+from sqlalchemy import func, text, or_, and_
 from sqlalchemy.sql import text
 
 from application import db
@@ -165,7 +165,9 @@ SELECT child_id FROM children
     @staticmethod
     def exists(link, text):
         exists = db.session.query(Bookmark.query\
-                .filter(or_(Bookmark.link == link, Bookmark.text == text)).exists())\
-                .scalar()
+                .filter(and_(
+                    Bookmark.user_id == current_user.id,
+                    or_(Bookmark.link == link, Bookmark.text == text))
+                ).exists()).scalar()
 
         return exists

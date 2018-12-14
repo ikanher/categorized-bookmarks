@@ -1,5 +1,5 @@
 from flask_login import current_user
-from sqlalchemy import func
+from sqlalchemy import func, and_
 
 from application import db
 from application.models import Base, categorybookmark
@@ -67,7 +67,9 @@ class Category(Base):
     @staticmethod
     def exists(name):
         exists = db.session.query(Category.query\
-                .filter(Category.name == name).exists())\
-                .scalar()
+                .filter(and_(
+                    Category.user_id == current_user.id,
+                    Category.name == name)
+                ).exists()).scalar()
 
         return exists
