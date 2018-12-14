@@ -139,10 +139,13 @@ SELECT child_id FROM children
         keywords = '%' + keywords + '%'
 
         # query bookmarks by link, text and description
-        bookmarks = db.session.query(Bookmark).filter(or_(\
-                Bookmark.link.like(keywords),\
-                Bookmark.text.like(keywords),\
-                Bookmark.description.like(keywords)))
+        bookmarks = db.session.query(Bookmark).filter(
+                and_(
+                    Bookmark.user_id == current_user.id,
+                    or_(
+                        Bookmark.link.like(keywords),
+                        Bookmark.text.like(keywords),
+                        Bookmark.description.like(keywords))))
 
         sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
         bookmarks = bookmarks.order_by(sort_field)
