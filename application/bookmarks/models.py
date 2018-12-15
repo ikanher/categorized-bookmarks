@@ -39,14 +39,14 @@ class Bookmark(Base):
         sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
         bookmarks = bookmarks.order_by(sort_field)
 
-        return bookmarks.all()
+        return bookmarks
 
     @staticmethod
     def get_sort_field(sort_by, sort_direction):
         if sort_by:
             sort_field = Bookmark.__table__.c[sort_by]
         else:
-            sort_field = Bookmark.date_modified
+            sort_field = Bookmark.text
 
         if sort_direction == 'desc':
             sort_field = sort_field.desc()
@@ -90,7 +90,7 @@ class Bookmark(Base):
         sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
         bookmarks = bookmarks.order_by(sort_field)
 
-        return bookmarks.all()
+        return bookmarks
 
     @staticmethod
     def get_child_category_ids(category_id):
@@ -131,7 +131,7 @@ SELECT child_id FROM children
         sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
         bookmarks = bookmarks.order_by(sort_field)
 
-        return bookmarks.all()
+        return bookmarks
 
     @staticmethod
     def search(search_string, sort_by=None, sort_direction=None):
@@ -150,13 +150,13 @@ SELECT child_id FROM children
         sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
         bookmarks = bookmarks.order_by(sort_field)
 
-        return bookmarks.all()
+        return bookmarks
 
     @staticmethod
     def get_sort_fields():
         fields = []
-        fields.append(('date_modified', 'Modification time'))
         fields.append(('text', 'Link text'))
+        fields.append(('date_modified', 'Modification time'))
         fields.append(('link', 'Link URL'))
 
         return fields

@@ -4,11 +4,11 @@
 <div class="container">
     {% if form %}
     {% if uncategorized %}
-    <form method="POST" action="{{ url_for('bookmarks_list', uncategorized=1) }}">
+    <form method="GET" action="{{ url_for('bookmarks_list', uncategorized=1) }}">
+        <input type="hidden" name="uncategorized" value="{{ request.args.get('uncategorized') }}" />
     {% else %}
-    <form method="POST" action="{{ url_for('bookmarks_list') }}">
+    <form method="GET" action="{{ url_for('bookmarks_list') }}">
     {% endif %}
-        {{ form.hidden_tag() }}
         <div class="input-group mt-2">
         {% if form.categories %}
             {{ wtf.form_field(form.categories, class="selectpicker bg-light mr-3", **{'onchange': 'this.form.submit()', 'data-live-search': 'true'}) }}
@@ -18,6 +18,10 @@
         </div>
     </form>
     {% endif %}
+
+    {{ pagination.info }}
+    {{ pagination.links }}
     {% include 'bookmarks/bookmark-list.html' %}
+    {{ pagination.links }}
 </div>
 {% endblock %}

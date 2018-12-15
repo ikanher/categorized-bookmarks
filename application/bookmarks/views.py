@@ -1,7 +1,9 @@
 from application import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
+from flask_paginate import Pagination, get_page_parameter
 
+from application.categories.models import Category
 from application.bookmarks.models import Bookmark
 from application.bookmarks.forms import (
         BookmarkForm,
@@ -14,49 +16,68 @@ from application.bookmarks.forms import (
 @app.route('/bookmarks/', methods=['GET', 'POST'])
 @login_required
 def bookmarks_list():
-    if request.method == 'GET':
-        if request.args.get('uncategorized'):
-            # list only uncategorized bookmarks, no category selection
-            return render_template('bookmarks/list.html',
-                    bookmarks=Bookmark.get_uncategorized_bookmarks(),
-                    uncategorized=1,
-                    form=SortableForm())
-        else:
-            # show all bookmarks
-            return render_template('bookmarks/list.html',
-                    bookmarks=Bookmark.get_user_bookmarks(current_user.id),
-                    form=SelectCategoriesFormWithSort())
 
-    # list only uncategorized bookmarks if requested so
+    # pagination parameters
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+
+    # sort parameters
+    sort_by = request.args.get('sort_by')
+    sort_direction = request.args.get('sort_direction')
+
     if request.args.get('uncategorized'):
-        form = SortableForm(request.form)
-        sort_by = form.sort_by.data
-        sort_direction = form.sort_direction.data
-
+        # list only uncategorized bookmarks, no category selection
         bookmarks = Bookmark.get_uncategorized_bookmarks(sort_by, sort_direction)
+
+        # create form and fill it with data from request
+        form = SortableForm()
+        form.sort_by.data = sort_by
+        form.sort_direction.data = sort_direction
+
+        # pagination
+        pagination = get_pagination(page, bookmarks)
+
         return render_template('bookmarks/list.html',
-                uncategorized=1,
+                pagination=pagination,
                 bookmarks=bookmarks,
+                uncategorized=1,
                 form=form)
 
-    # show only bookmarks in selected categories
-    form = SelectCategoriesFormWithSort(request.form)
-    sort_by = form.sort_by.data
-    sort_direction = form.sort_direction.data
+    if request.args.get('categories'):
+        # get category ids from query string and fetch categories
+        category_ids = request.args.getlist('categories')
+        categories = Category.query.filter(Category.id.in_(category_ids))
 
-    categories = form.categories.data
+        # create form and fill it with data from request
+        form = SelectCategoriesFormWithSort()
+        form.sort_by.data = sort_by
+        form.sort_direction.data = sort_direction
+        form.categories.data = categories
 
-    if not categories:
-        # show all user's bookmarks
-        bookmarks = Bookmark.get_user_bookmarks(current_user.id, sort_by, sort_direction)
-    else:
         # collect user's bookmarks that are in all selected categories
         bookmarks = Bookmark.get_bookmarks_in_categories(categories, sort_by, sort_direction)
 
-    return render_template('bookmarks/list.html',
-            uncategorized=request.args.get('uncategorized'),
-            bookmarks=bookmarks,
-            form=form)
+        # paging
+        pagination = get_pagination(page, bookmarks)
+
+        return render_template('bookmarks/list.html',
+                pagination=pagination,
+                uncategorized=request.args.get('uncategorized'),
+                bookmarks=bookmarks,
+                form=form)
+    else:
+        # show all bookmarks
+        bookmarks = Bookmark.get_user_bookmarks(current_user.id, sort_by, sort_direction)
+
+        form = SelectCategoriesFormWithSort()
+        form.sort_by.data = sort_by
+        form.sort_direction.data = sort_direction
+
+        pagination = get_pagination(page, bookmarks)
+
+        return render_template('bookmarks/list.html',
+                pagination=pagination,
+                bookmarks=bookmarks.paginate(page, app.config['BOOKMARKS_PER_PAGE'], False).items,
+                form=form)
 
 @app.route('/bookmarks/create', methods=['GET', 'POST'])
 @login_required
@@ -149,6 +170,9 @@ def bookmarks_search():
     if request.method == 'GET':
         return render_template('bookmarks/search.html', form=SearchForm())
 
+    # pagination parameters
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+
     form = SearchForm(request.form)
     sort_by = form.sort_by.data
     sort_direction = form.sort_direction.data
@@ -156,6 +180,25 @@ def bookmarks_search():
     if form.validate_on_submit():
         search_string = form.search_field.data
         bookmarks = Bookmark.search(search_string, sort_by, sort_direction)
-        return render_template('bookmarks/search.html', form=form, bookmarks=bookmarks)
+        pagination = get_pagination(page, bookmarks, search=True)
+
+        return render_template('bookmarks/search.html',
+                pagination=pagination,
+                form=form,
+                bookmarks=bookmarks)
 
     return render_template('bookmarks/search.html', form=form)
+
+def get_pagination(page, bookmarks, search=False):
+    pagination = Pagination(
+            page=page,
+            per_page=app.config['BOOKMARKS_PER_PAGE'],
+            search=search,
+            total=bookmarks.count(),
+            found=bookmarks.count(),
+            css_framework='bootstrap4',
+            link_size=1,
+            record_name='bookmarks')
+
+    return pagination
+

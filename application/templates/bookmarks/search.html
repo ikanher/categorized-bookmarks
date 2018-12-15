@@ -13,5 +13,12 @@
         {{ wtf.form_field(form.search, class="btn btn-primary btn-md mb-3") }}
         </input>
     </form>
+    {% if pagination %}
+    {{ pagination.info }}
+    {{ pagination.links }}
+    {% endif %}
     {% include 'bookmarks/bookmark-list.html' %}
+    {% if pagination %}
+    {{ pagination.links }}
+    {% endif %}
 {% endblock %}

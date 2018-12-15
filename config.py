@@ -10,4 +10,4 @@ class Config():
 
     SECRET_KEY = urandom(32)
 
-
+    BOOKMARKS_PER_PAGE = 100
