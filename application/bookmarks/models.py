@@ -7,9 +7,9 @@ from application.models import Base, categorybookmark
 from application.categories.models import categoryinheritance
 
 class Bookmark(Base):
-    link = db.Column(db.String(2000), nullable=False)
-    text = db.Column(db.String(2000))
-    description = db.Column(db.String(2000))
+    link = db.Column(db.String(2000), nullable=False, index=True)
+    text = db.Column(db.String(2000), index=True)
+    description = db.Column(db.String(2000), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
 
     categories = db.relationship(
