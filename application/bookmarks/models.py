@@ -134,18 +134,18 @@ SELECT child_id FROM children
         return bookmarks.all()
 
     @staticmethod
-    def search(keywords, sort_by=None, sort_direction=None):
+    def search(search_string, sort_by=None, sort_direction=None):
         # wildcard search
-        keywords = '%' + keywords + '%'
+        search_string = func.lower('%' + search_string + '%')
 
         # query bookmarks by link, text and description
         bookmarks = db.session.query(Bookmark).filter(
                 and_(
                     Bookmark.user_id == current_user.id,
                     or_(
-                        Bookmark.link.like(keywords),
-                        Bookmark.text.like(keywords),
-                        Bookmark.description.like(keywords))))
+                        func.lower(Bookmark.link).like(search_string),
+                        func.lower(Bookmark.text).like(search_string),
+                        func.lower(Bookmark.description).like(search_string))))
 
         sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
         bookmarks = bookmarks.order_by(sort_field)

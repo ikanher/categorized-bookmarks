@@ -154,8 +154,8 @@ def bookmarks_search():
     sort_direction = form.sort_direction.data
 
     if form.validate_on_submit():
-        keywords = form.search_field.data
-        bookmarks = Bookmark.search(keywords, sort_by, sort_direction)
+        search_string = form.search_field.data
+        bookmarks = Bookmark.search(search_string, sort_by, sort_direction)
         return render_template('bookmarks/search.html', form=form, bookmarks=bookmarks)
 
     return render_template('bookmarks/search.html', form=form)
