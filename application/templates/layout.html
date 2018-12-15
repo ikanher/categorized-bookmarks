@@ -11,19 +11,12 @@
     </head>
 
     <body>
-        <div class="container-fluid">
-            {% include "navbar.html" %}
-            {% include "navbar-secondary.html" %}
+        {% include "navbar.html" %}
+        {% include "navbar-secondary.html" %}
+        <div class="container">
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                <div class="alert alert-dismissible fade show {% if category == 'message' %} alert-info {% else %} {{ category }} {% endif %}" role="alert">
-                    {{ message }}
-                </div>
-                {% endfor %}
-            {% endif %}
-            {% endwith %}
+            {% include "flash-messages.html" %}
+
             {% block body %}
             <p>
                 Content.

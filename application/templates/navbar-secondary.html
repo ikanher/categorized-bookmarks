@@ -1,5 +1,5 @@
 {% if current_user.is_authenticated %}
-<div class="container">
+<div class="container-fluid">
     {% if 'categories' in request.endpoint %}
     {% include 'categories/navbar-contents.html' %}
     {% endif %}
