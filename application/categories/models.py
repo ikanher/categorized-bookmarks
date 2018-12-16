@@ -40,13 +40,32 @@ class Category(Base):
         self.user_id = user_id
 
     def bookmark_count(self):
-        count = db.session.query(func.count(Category.id))\
-                .join(categorybookmark)\
-                .filter(Category.id == self.id)\
-                .group_by(Category.id)\
-                .scalar()
+        # changed temporarily to bring ttapio love and happiness
 
-        return count or 0
+        #count = db.session.query(func.count(Category.id))\
+        #        .join(categorybookmark)\
+        #        .filter(Category.id == self.id)\
+        #        .group_by(Category.id)\
+        #        .scalar()
+
+        #return count or 0
+
+        sql = """
+SELECT COUNT(Category.id)
+FROM Category
+JOIN CategoryBookmark ON Category.id = CategoryBookmark.category_id
+WHERE Category.id = :category_id
+GROUP BY Category.id
+        """
+
+        stmt = text(sql).params(category_id=self.id)
+        resultProxy = db.engine.execute(stmt)
+        rows = resultProxy.fetchone()
+
+        if not rows:
+            return 0
+
+        return rows[0]
 
     def child_category_count(self):
         count = db.session.query(func.count(Category.id))\
