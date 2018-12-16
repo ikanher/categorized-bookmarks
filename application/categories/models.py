@@ -1,5 +1,5 @@
 from flask_login import current_user
-from sqlalchemy import func, and_
+from sqlalchemy import func, text, and_
 
 from application import db
 from application.models import Base, categorybookmark
