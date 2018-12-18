@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form method="POST" action="{{ url_for('auth_login') }}">
+<form method="POST" action="{{ url_for('auth_login', next=request.args.get('next')) }}">
     {{ form.hidden_tag() }}
     {{ wtf.form_errors(form, hiddens="only") }}
     {{ wtf.form_field(form.username, autofocus=true) }}

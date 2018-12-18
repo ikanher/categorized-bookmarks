@@ -23,9 +23,23 @@ def auth_login():
 
         flash('Successful login! Welcome %s' % user.name, 'alert-success')
 
-        return redirect(url_for('index'))
+        next_page = request.args.get('next')
+        if check_next_page(next_page):
+            return redirect(next_page)
+        else:
+            return redirect(url_for('bookmarks_list'))
 
     return render_template('auth/login_form.html', form=form)
+
+
+def check_next_page(next_page):
+    if not next_page:
+        return False
+
+    if ':' in next_page:
+        return False
+
+    return True
 
 @app.route('/auth/register', methods=['GET', 'POST'])
 def auth_register():
