@@ -14,6 +14,7 @@ a.category-card:hover {
     color: inherit !important;
     background-color: rgb(248, 249, 250) !important;
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
+    transition: all 300ms ease
 }
 .pagination-page-info {
     font-size: 10px;
