@@ -30,3 +30,4 @@ Aki would be ecstatic if categories could also contain other categories as subca
 
 [Database schema](documentation/schema.md)
 
+[Running in Docker](documentation/docker.md)
