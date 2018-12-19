@@ -7,10 +7,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from functools import wraps
 
-from config import Config
-
 app = Flask(__name__)
-app.config.from_object(Config)
+if app.config['ENV'] == 'production':
+    app.config.from_object('config.ProductionConfig')
+else:
+    app.config.from_object('config.DevelopmentConfig')
 
 bcrypt = Bcrypt(app)
 csrf = CSRFProtect(app)

@@ -1,3 +1,7 @@
+import os
+
+os.environ['FLASK_ENV'] = 'development'
+
 from application import app
 
 #app.logger.addHandler(logging.StreamHandler(sys.stdout))
