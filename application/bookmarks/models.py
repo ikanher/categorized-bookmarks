@@ -24,27 +24,12 @@ class Bookmark(Base):
         self.user_id = user_id
 
     def category_count(self):
-        # changed temporarily to bring ttapio love and happiness
+        count = db.session.query(func.count(Bookmark.id))\
+                .join((categorybookmark, Bookmark.id == categorybookmark.c.bookmark_id))\
+                .filter(Bookmark.id == self.id)\
+                .scalar()
 
-        #count = db.session.query(func.count(Bookmark.id))\
-        #        .join((categorybookmark, Bookmark.id == categorybookmark.c.bookmark_id))\
-        #        .filter(Bookmark.id == self.id)\
-        #        .scalar()
-
-        #return count or 0
-
-        sql = """
-SELECT COUNT(Bookmark.id)
-FROM Bookmark
-JOIN CategoryBookmark ON Bookmark.id = CategoryBookmark.bookmark_id
-wHERE Bookmark.id = :bookmark_id
-        """
-
-        stmt = text(sql).params(bookmark_id=self.id)
-        resultProxy = db.engine.execute(stmt)
-        count = resultProxy.fetchone()[0]
-
-        return count
+        return count or 0
 
     @staticmethod
     def get_user_bookmarks(user_id, sort_by=None, sort_direction=None):
