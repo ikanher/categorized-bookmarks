@@ -1,9 +1,16 @@
-FROM python
+FROM python:3.7-alpine
 
-WORKDIR /opt/categorized-bookmarks
-RUN apt-get update && apt-get install -y git
-RUN git clone https://github.com/ikanher/categorized-bookmarks .
-RUN python3 -m venv venv
-RUN /bin/bash -c "source venv/bin/activate"
-RUN pip install -r requirements.txt
-CMD ["gunicorn", "--preload", "--bind", "0.0.0.0:80", "--workers", "1", "application:app"]
+COPY ./categorized-bookmarks /app
+
+WORKDIR /app
+
+RUN apk add --no-cache libpq postgresql-dev py-sqlalchemy && \
+    apk add --no-cache --virtual .build-deps build-base python3-dev libffi-dev && \
+    pip install -r requirements.txt --no-cache-dir && \
+    apk --purge del .build-deps && \
+    adduser -S app && \
+    chown -R app /app
+
+USER app
+
+CMD ["gunicorn", "--preload", "--bind", "0.0.0.0:5000", "--workers", "1", "application:app"]

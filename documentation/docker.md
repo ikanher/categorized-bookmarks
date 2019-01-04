@@ -13,7 +13,7 @@ docker pull ikanher/categorized-bookmarks
 To run in development mode, with SQLite database, use
 
 ```bash
-docker run -e 'FLASK_ENV=development' --rm -p 5000:80 -d ikanher/categorized-bookmarks
+docker run -e 'FLASK_ENV=development' --rm -p 5000:5000 -d ikanher/categorized-bookmarks
 ```
 
 The app will listen for connections at [localhost port 5000](http://localhost:5000/).
@@ -23,7 +23,7 @@ The app will listen for connections at [localhost port 5000](http://localhost:50
 To run in development mode, with PostgreSQL database, use
 
 ```bash
-docker run -e 'DATABASE_URL=<insert your postgres uri here>' --rm -p 5000:80 -d ikanher/categorized-bookmarks
+docker run -e 'DATABASE_URL=<insert your postgres uri here>' --rm -p 5000:5000 -d ikanher/categorized-bookmarks
 ```
 
 The app will listen for connections at [localhost port 5000](http://localhost:5000/).
