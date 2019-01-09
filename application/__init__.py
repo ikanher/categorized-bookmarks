@@ -45,11 +45,11 @@ def role_required(role_name):
 
 
 from application import views
+from application import schemas
 from application.categories import models, views
 from application.bookmarks import models, views
 from application.users import views
-from application.auth import models
-from application.auth import views
+from application.auth import models, views
 from application.auth.models import User, Role
 
 db.create_all()

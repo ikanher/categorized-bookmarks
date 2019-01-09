@@ -1,10 +1,11 @@
 from application import app, db, login_manager
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
 from flask_paginate import Pagination, get_page_parameter
 
 from application.categories.models import Category
 from application.bookmarks.models import Bookmark
+from application.schemas import BookmarkSchema
 from application.bookmarks.forms import (
         BookmarkForm,
         BookmarkCategoryForm,
@@ -36,11 +37,16 @@ def bookmarks_list():
         # pagination
         pagination = get_pagination(page, bookmarks)
 
-        return render_template('bookmarks/list.html',
-                pagination=pagination,
-                bookmarks=bookmarks,
-                uncategorized=1,
-                form=form)
+        if request.args.get('json'):
+            bookmarks_schema = BookmarkSchema(many=True)
+            output = bookmarks_schema.dump(bookmarks.all()).data
+            return jsonify({'bookmarks': output})
+        else:
+            return render_template('bookmarks/list.html',
+                    pagination=pagination,
+                    bookmarks=bookmarks,
+                    uncategorized=1,
+                    form=form)
 
     if request.args.get('categories'):
         # get category ids from query string and fetch categories
@@ -59,11 +65,16 @@ def bookmarks_list():
         # paging
         pagination = get_pagination(page, bookmarks)
 
-        return render_template('bookmarks/list.html',
-                pagination=pagination,
-                uncategorized=request.args.get('uncategorized'),
-                bookmarks=bookmarks,
-                form=form)
+        if request.args.get('json'):
+            bookmarks_schema = BookmarkSchema(many=True)
+            output = bookmarks_schema.dump(bookmarks.all()).data
+            return jsonify({'bookmarks': output})
+        else:
+            return render_template('bookmarks/list.html',
+                    pagination=pagination,
+                    uncategorized=request.args.get('uncategorized'),
+                    bookmarks=bookmarks,
+                    form=form)
     else:
         # show all bookmarks
         bookmarks = Bookmark.get_user_bookmarks(current_user.id, sort_by, sort_direction)
@@ -74,10 +85,15 @@ def bookmarks_list():
 
         pagination = get_pagination(page, bookmarks)
 
-        return render_template('bookmarks/list.html',
-                pagination=pagination,
-                bookmarks=bookmarks.paginate(page, app.config['BOOKMARKS_PER_PAGE'], False).items,
-                form=form)
+        if request.args.get('json'):
+            bookmarks_schema = BookmarkSchema(many=True)
+            output = bookmarks_schema.dump(bookmarks.all()).data
+            return jsonify({'bookmarks': output})
+        else:
+            return render_template('bookmarks/list.html',
+                    pagination=pagination,
+                    bookmarks=bookmarks.paginate(page, app.config['BOOKMARKS_PER_PAGE'], False).items,
+                    form=form)
 
 @app.route('/bookmarks/create', methods=['GET', 'POST'])
 @login_required

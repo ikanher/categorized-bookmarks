@@ -1,7 +1,8 @@
-from application import app, db, login_manager
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
 
+from application import app, db, login_manager
+from application.schemas import CategorySchema
 from application.bookmarks.models import Bookmark
 from application.categories.models import Category
 from application.categories.forms import CategoryForm
@@ -9,7 +10,12 @@ from application.categories.forms import CategoryForm
 @app.route('/categories/', methods=['GET'])
 @login_required
 def categories_list():
-    return render_template('categories/list.html', categories=current_user.categories)
+    if request.args.get('json'):
+        category_schema = CategorySchema(many=True)
+        output = category_schema.dump(current_user.categories).data
+        return jsonify({'categories': output})
+    else:
+        return render_template('categories/list.html', categories=current_user.categories)
 
 @app.route('/categories/view/<int:id>', methods=['GET'])
 @login_required
@@ -19,7 +25,12 @@ def categories_view(id):
     if not c in current_user.categories:
         return login_manager.unauthorized()
 
-    return render_template('categories/view.html', category=c)
+    if request.args.get('json'):
+        category_schema = CategorySchema()
+        output = category_schema.dump(c).data
+        return jsonify({'categories': output})
+    else:
+        return render_template('categories/view.html', category=c)
 
 @app.route('/categories/create', methods=['GET', 'POST'])
 @login_required
