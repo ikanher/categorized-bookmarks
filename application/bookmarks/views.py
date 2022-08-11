@@ -59,8 +59,13 @@ def bookmarks_list():
         form.sort_direction.data = sort_direction
         form.categories.data = categories
 
-        # collect user's bookmarks that are in all selected categories
-        bookmarks = Bookmark.get_bookmarks_in_categories(categories, sort_by, sort_direction)
+        if categories.count() == 1:
+            # collect user's bookmarks that are in selected category and its child categories
+            category = categories[0]
+            bookmarks = Bookmark.get_bookmarks_in_categories_with_children(category, sort_by, sort_direction)
+        else:
+            # collect user's bookmarks that are in all selected categories
+            bookmarks = Bookmark.get_bookmarks_in_categories(categories, sort_by, sort_direction)
 
         # paging
         pagination = get_pagination(page, bookmarks)

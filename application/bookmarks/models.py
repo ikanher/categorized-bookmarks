@@ -56,30 +56,55 @@ class Bookmark(Base):
         return sort_field
 
     @staticmethod
-    def get_bookmarks_in_categories(categories, sort_by=None, sort_direction=None):
+    def get_bookmarks_in_categories_with_children(category, sort_by=None, sort_direction=None):
         # fetch bookmarks that belong to all these categories
 
-        # first build all required queries and collect them
-        queries = []
-        for c in categories:
-            # get the ids of child categories recursively
-            category_ids = Bookmark.get_child_category_ids(c.id)
+        # get the ids of child categories recursively
+        category_ids = Bookmark.get_child_category_ids(category.id)
 
-            # add id of the root category
-            category_ids.append(c.id)
+        # add id of the root category
+        category_ids.append(category.id)
 
-            # query for bookmark ids in these categories
-            query = db.session.query(categorybookmark.c.bookmark_id)\
-                    .filter(categorybookmark.c.category_id.in_(category_ids))
+        # query for bookmark ids in these categories
+        query = db.session.query(categorybookmark.c.bookmark_id)\
+                .filter(categorybookmark.c.category_id.in_(category_ids))
 
-            # collect query for the next step
-            queries.append(query)
+        # now we have the query for the bookmark ids,
+        # let's use those to load the bookmark objects
+        bookmarks = db.session.query(Bookmark)\
+                .filter(Bookmark.id.in_(query))
 
-        # now intersect all the collected queries to find
-        # bookmarks that belong in all of the wanted categories
-        bookmark_ids = queries.pop()
-        for q in queries:
-            bookmark_ids = bookmark_ids.intersect(q)
+        # sorting
+        sort_field = Bookmark.get_sort_field(sort_by, sort_direction)
+        bookmarks = bookmarks.order_by(sort_field)
+
+        return bookmarks
+
+    @staticmethod
+    def get_bookmarks_in_categories(categories, sort_by=None, sort_direction=None):
+
+        # build aliases to be used in building multiple joins for
+        # the same table to ensure that the, in fact, the bookmarks
+        # belong to _all_ the categories. NB: IN() query does not work
+        # here because it is "category1 OR category2 OR ..." and we
+        # really want "category1 AND category 2 AND ..."
+        category_aliases = { f'cb{i}': c.id for i, c in enumerate(categories) }
+
+        # fetch bookmarks that belong to all these categkories
+        sql = "SELECT b.id FROM bookmark b"
+
+        for alias, category_id in category_aliases.items():
+            sql += f" JOIN categorybookmark {alias} ON b.id = {alias}.bookmark_id and {alias}.category_id = :{alias}"
+
+        stmt = text(sql).params(**category_aliases)
+
+        # fetch results
+        res = db.engine.execute(stmt)
+
+        # and collect values
+        bookmark_ids = []
+        for row in res:
+            bookmark_ids.append(row[0])
 
         # now we have the query for the bookmark ids,
         # let's use those to load the bookmark objects

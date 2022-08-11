@@ -39,6 +39,9 @@ class Category(Base):
         self.description = description
         self.user_id = user_id
 
+    def __str__(self):
+        return f'<{self.id} ({self.name})>'
+
     def bookmark_count(self):
         count = db.session.query(func.count(Category.id))\
                 .join(categorybookmark)\
@@ -63,6 +66,33 @@ class Category(Base):
                 .scalar()
 
         return count or 0
+
+    @staticmethod
+    def get_child_category_ids(category_id):
+        sql = """
+WITH RECURSIVE children (parent_id, child_id) AS (
+    SELECT parent_id, child_id
+    FROM categoryinheritance WHERE parent_id = :category_id
+UNION
+    SELECT ci.parent_id, ci.child_id
+    FROM categoryinheritance ci
+    JOIN children c ON ci.parent_id = c.child_id
+)
+SELECT child_id FROM children
+        """
+
+        stmt = text(sql).params(category_id=category_id)
+
+        # fetch results
+        res = db.engine.execute(stmt)
+
+        # and collect values
+        child_ids = []
+        for row in res:
+            child_ids.append(row[0])
+
+        return child_ids
+
 
     @staticmethod
     def exists(name):
